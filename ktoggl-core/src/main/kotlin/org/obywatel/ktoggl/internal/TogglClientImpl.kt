@@ -1,7 +1,7 @@
 package org.obywatel.ktoggl.internal
 
+import org.obywatel.ktoggl.TimeUtilProvider
 import org.obywatel.ktoggl.TogglClient
-import org.obywatel.ktoggl.TogglTimeEntryClient
 import org.obywatel.ktoggl.entity.TimeEntry
 import org.obywatel.ktoggl.internal.retrofit.TogglApi
 import org.obywatel.ktoggl.internal.retrofit.TogglReportApi
@@ -9,12 +9,12 @@ import org.obywatel.ktoggl.request.DetailedReportParameters
 import org.obywatel.ktoggl.request.SummaryReportParameters
 import org.obywatel.ktoggl.request.WeeklyReportParameters
 
-internal class TogglClientImpl(togglApi: TogglApi, togglReportApi: TogglReportApi) : org.obywatel.ktoggl.TogglClient {
+internal class TogglClientImpl(p: TimeUtilProvider, togglApi: TogglApi, togglReportApi: TogglReportApi) : TogglClient {
 
-    private val togglUserClient = TogglUserClientImpl(togglApi)
-    private val togglWorkspaceClient = TogglWorkspaceClientImpl(togglApi)
-    private val togglTimeEntityClient = TogglTimeEntityClientImpl(togglApi)
-    private val togglReportClient = TogglReportClientImpl(togglReportApi)
+    private val togglUserClient = TogglUserClientImpl(p, togglApi)
+    private val togglWorkspaceClient = TogglWorkspaceClientImpl(p, togglApi)
+    private val togglTimeEntityClient = TogglTimeEntityClientImpl(p, togglApi)
+    private val togglReportClient = TogglReportClientImpl(p, togglReportApi)
 
     override fun getCurrentUser() = togglUserClient.getCurrentUser()
 

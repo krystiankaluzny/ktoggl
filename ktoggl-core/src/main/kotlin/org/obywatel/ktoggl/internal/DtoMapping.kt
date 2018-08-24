@@ -1,13 +1,12 @@
 package org.obywatel.ktoggl.internal
 
+import org.obywatel.ktoggl.TimeUtilProvider
 import org.obywatel.ktoggl.entity.*
 import org.obywatel.ktoggl.fromHexColorToInt
 import org.obywatel.ktoggl.internal.retrofit.dto.DetailedReportResponse
-import org.obywatel.ktoggl.secondsToOffsetDateTimeStr
-import org.obywatel.ktoggl.toEpochSecond
 
 
-internal fun org.obywatel.ktoggl.internal.retrofit.dto.User.toExternal() =
+internal fun org.obywatel.ktoggl.internal.retrofit.dto.User.toExternal(p: TimeUtilProvider) =
     User(
         id = id,
         apiToken = api_token,
@@ -18,11 +17,11 @@ internal fun org.obywatel.ktoggl.internal.retrofit.dto.User.toExternal() =
         language = language,
         timezone = timezone,
         imageUrl = image_url ?: "",
-        creationTimestamp = created_at.toEpochSecond(),
-        lastUpdateTimestamp = at.toEpochSecond()
+        creationTimestamp = p.toEpochSecond(created_at),
+        lastUpdateTimestamp = p.toEpochSecond(at)
     )
 
-internal fun org.obywatel.ktoggl.internal.retrofit.dto.Workspace.toExternal() =
+internal fun org.obywatel.ktoggl.internal.retrofit.dto.Workspace.toExternal(p: TimeUtilProvider) =
     Workspace(
         id = id,
         name = name,
@@ -35,10 +34,10 @@ internal fun org.obywatel.ktoggl.internal.retrofit.dto.Workspace.toExternal() =
         onlyAdminsMayCreateProjects = only_admins_may_create_projects,
         onlyAdminsSeeBillableRates = only_admins_see_billable_rates,
         defaultHourlyRate = default_hourly_rate ?: 0.0,
-        lastUpdateTimestamp = at.toEpochSecond()
+        lastUpdateTimestamp = p.toEpochSecond(at)
     )
 
-internal fun org.obywatel.ktoggl.internal.retrofit.dto.Project.toExternal() =
+internal fun org.obywatel.ktoggl.internal.retrofit.dto.Project.toExternal(p: TimeUtilProvider) =
     Project(
         id = id,
         name = name,
@@ -46,7 +45,7 @@ internal fun org.obywatel.ktoggl.internal.retrofit.dto.Project.toExternal() =
         clientId = cid,
         active = active,
         private = is_private,
-        creationTimestamp = at.toEpochSecond(),
+        creationTimestamp = p.toEpochSecond(at),
         colorId = color,
         color = hex_color.fromHexColorToInt()
     )
@@ -58,7 +57,7 @@ internal fun org.obywatel.ktoggl.internal.retrofit.dto.CurrencyAmount.toExternal
         amount = amount
     )
 
-internal fun org.obywatel.ktoggl.internal.retrofit.dto.DetailedTimeEntry.toExternal() =
+internal fun org.obywatel.ktoggl.internal.retrofit.dto.DetailedTimeEntry.toExternal(p: TimeUtilProvider) =
     DetailedTimeEntry(
         id = id,
         client = client,
@@ -66,10 +65,10 @@ internal fun org.obywatel.ktoggl.internal.retrofit.dto.DetailedTimeEntry.toExter
         task = tid?.let { DetailedTimeEntry.Info(it, task!!) },
         user = uid?.let { DetailedTimeEntry.Info(it, user!!) },
         description = description,
-        startTimestamp = start.toEpochSecond(),
-        endTimestamp = end?.toEpochSecond(),
+        startTimestamp = p.toEpochSecond(start),
+        endTimestamp = p.toEpochSecond(end),
         durationMillis = dur,
-        lastUpdateTimestamp = updated.toEpochSecond(),
+        lastUpdateTimestamp = p.toEpochSecond(updated),
         useStop = use_stop,
         billable = is_billable,
         payment = billable,
@@ -77,17 +76,17 @@ internal fun org.obywatel.ktoggl.internal.retrofit.dto.DetailedTimeEntry.toExter
         tags = tags
     )
 
-internal fun DetailedReportResponse.toExternal() =
+internal fun DetailedReportResponse.toExternal(p: TimeUtilProvider) =
     DetailedReport(
         totalCount = total_count,
         perPage = per_page,
         totalGrand = total_grand,
         totalPayment = total_billable,
         totalCurrencies = total_currencies.map { it.toExternal() },
-        detailedTimeEntries = data.map { it.toExternal() }
+        detailedTimeEntries = data.map { it.toExternal(p) }
     )
 
-internal fun org.obywatel.ktoggl.internal.retrofit.dto.TimeEntry.toExternal() =
+internal fun org.obywatel.ktoggl.internal.retrofit.dto.TimeEntry.toExternal(p: TimeUtilProvider) =
     TimeEntry(
         id = id,
         description = description,
@@ -95,14 +94,14 @@ internal fun org.obywatel.ktoggl.internal.retrofit.dto.TimeEntry.toExternal() =
         projectId = pid,
         taskId = tid,
         billable = billable,
-        startTimestamp = start.toEpochSecond(),
-        endTimestamp = stop?.toEpochSecond(),
+        startTimestamp = p.toEpochSecond(start),
+        endTimestamp = p.toEpochSecond(stop),
         durationSeconds = duration,
         tags = tags,
-        lastUpdateTimestamp = at?.toEpochSecond()
+        lastUpdateTimestamp = p.toEpochSecond(at)
     )
 
-internal fun TimeEntry.toInternal() =
+internal fun TimeEntry.toInternal(p: TimeUtilProvider) =
     org.obywatel.ktoggl.internal.retrofit.dto.TimeEntry(
         id = id,
         description = description,
@@ -110,10 +109,10 @@ internal fun TimeEntry.toInternal() =
         pid = projectId,
         tid = taskId,
         billable = billable,
-        start = startTimestamp?.secondsToOffsetDateTimeStr(),
-        stop = endTimestamp?.secondsToOffsetDateTimeStr(),
+        start = p.secondsToOffsetDateTimeStr(startTimestamp),
+        stop = p.secondsToOffsetDateTimeStr(endTimestamp),
         duration = durationSeconds,
         created_with = "",
         tags = tags,
-        at = lastUpdateTimestamp?.secondsToOffsetDateTimeStr()
+        at = p.secondsToOffsetDateTimeStr(lastUpdateTimestamp)
     )

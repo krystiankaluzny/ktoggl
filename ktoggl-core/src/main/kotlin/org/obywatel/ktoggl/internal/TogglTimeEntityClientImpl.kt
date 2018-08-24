@@ -1,11 +1,12 @@
 package org.obywatel.ktoggl.internal
 
+import org.obywatel.ktoggl.TimeUtilProvider
 import org.obywatel.ktoggl.TogglTimeEntryClient
 import org.obywatel.ktoggl.entity.TimeEntry
 import org.obywatel.ktoggl.internal.retrofit.TogglApi
 import org.obywatel.ktoggl.internal.retrofit.dto.TimeEntryRequest
 
-internal class TogglTimeEntityClientImpl(private val togglApi: TogglApi) : org.obywatel.ktoggl.TogglTimeEntryClient {
+internal class TogglTimeEntityClientImpl(private val p: TimeUtilProvider, private val togglApi: TogglApi) : TogglTimeEntryClient {
 
     companion object {
         private const val TAG = "TogglTimeEntityClient"
@@ -27,13 +28,13 @@ internal class TogglTimeEntityClientImpl(private val togglApi: TogglApi) : org.o
         if (timeEntry.workspaceId == null && timeEntry.projectId == null && timeEntry.taskId == null)
             throw IllegalArgumentException("At least one of the following must be defined: workspaceId, projectId, taskId")
 
-        val duration = timeEntry.durationSeconds ?: ((timeEntry.endTimestamp ?: 0) - timeEntry.startTimestamp)
+        val duration = timeEntry.durationSeconds ?: ((timeEntry.endTimestamp ?: 0) - (timeEntry.startTimestamp ?: 0))
 
-        val internalTimeEntry = timeEntry.toInternal().copy(id = null, created_with = TAG, stop = null, duration = duration)
+        val internalTimeEntry = timeEntry.toInternal(p).copy(id = null, created_with = TAG, stop = null, duration = duration)
         val timeEntryRequest = TimeEntryRequest(internalTimeEntry)
         val timeEntryResponse = togglApi.createTimeEntry(timeEntryRequest).execute().body()
 
-        return timeEntryResponse?.timeEntry?.toExternal()
+        return timeEntryResponse?.timeEntry?.toExternal(p)
     }
 
     override fun startTimeEntry(timeEntry: TimeEntry): TimeEntry {

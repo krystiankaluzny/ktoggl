@@ -1,5 +1,6 @@
 package org.obywatel.ktoggl.internal
 
+import org.obywatel.ktoggl.TimeUtilProvider
 import org.obywatel.ktoggl.TogglReportClient
 import org.obywatel.ktoggl.entity.DetailedReport
 import org.obywatel.ktoggl.internal.retrofit.TogglReportApi
@@ -7,9 +8,8 @@ import org.obywatel.ktoggl.request.BaseReportParameters
 import org.obywatel.ktoggl.request.DetailedReportParameters
 import org.obywatel.ktoggl.request.SummaryReportParameters
 import org.obywatel.ktoggl.request.WeeklyReportParameters
-import org.obywatel.ktoggl.secondsToLocalDateStr
 
-internal class TogglReportClientImpl(private val togglReportApi: TogglReportApi) : org.obywatel.ktoggl.TogglReportClient {
+internal class TogglReportClientImpl(private val p: TimeUtilProvider, private val togglReportApi: TogglReportApi) : TogglReportClient {
 
     private companion object {
         const val userAgent = "TogglClient"
@@ -36,7 +36,7 @@ internal class TogglReportClientImpl(private val togglReportApi: TogglReportApi)
 
         val detailedReport = togglReportApi.detailed(params).execute().body() ?: return emptyDetailedReport
 
-        return detailedReport.toExternal()
+        return detailedReport.toExternal(p)
     }
 
     override fun getSummaryReport(workspaceId: Long, summaryReportParameters: SummaryReportParameters) {
@@ -56,8 +56,8 @@ internal class TogglReportClientImpl(private val togglReportApi: TogglReportApi)
         params["workspace_id"] = workspaceId.toString()
 
         baseReportParameters.userAgent.let { params["user_agent"] = it ?: userAgent }
-        baseReportParameters.fromTimestamp?.let { params["since"] = it.secondsToLocalDateStr() }
-        baseReportParameters.toTimestamp?.let { params["until"] = it.secondsToLocalDateStr() }
+        baseReportParameters.fromTimestamp?.let { params["since"] = p.secondsToLocalDateStr(it) }
+        baseReportParameters.toTimestamp?.let { params["until"] = p.secondsToLocalDateStr(it) }
         baseReportParameters.billable?.let { params["billable"] = it.value }
         baseReportParameters.clientIds.let { params["client_ids"] = it.joinToString(separator = separator) }
         baseReportParameters.membersOfGroupIds.let { params["members_of_group_ids"] = it.joinToString(separator = separator) }

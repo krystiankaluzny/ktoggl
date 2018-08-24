@@ -7,7 +7,7 @@ data class TimeEntry(
     var taskId: Long? = null,
     var description: String? = null,
     var billable: Boolean? = null,
-    var startTimestamp: Long,
+    var startTimestamp: Long? = null,
     var endTimestamp: Long? = null,
     var durationSeconds: Long? = null,
     var tags: List<String>? = null,

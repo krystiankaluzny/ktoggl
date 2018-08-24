@@ -6,7 +6,11 @@ import org.obywatel.ktoggl.request.SummaryReportParameters
 import org.obywatel.ktoggl.request.WeeklyReportParameters
 
 
-interface TogglClient : org.obywatel.ktoggl.TogglUserClient, org.obywatel.ktoggl.TogglWorkspaceClient, org.obywatel.ktoggl.TogglTimeEntryClient, org.obywatel.ktoggl.TogglReportClient
+interface TogglClient :
+    TogglUserClient,
+    TogglWorkspaceClient,
+    TogglTimeEntryClient,
+    TogglReportClient
 
 interface TogglUserClient {
 

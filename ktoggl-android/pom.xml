@@ -11,5 +11,18 @@
 
     <artifactId>ktoggl-android</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.obywatel.ktoggl</groupId>
+            <artifactId>ktoggl-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
+        <dependency>
+            <groupId>com.jakewharton.threetenabp</groupId>
+            <artifactId>threetenabp</artifactId>
+            <version>1.1.0</version>
+            <type>aar</type>
+        </dependency>
+    </dependencies>
 </project>

@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
+        <groupId>org.ktoggl</groupId>
         <artifactId>ktoggl</artifactId>
-        <groupId>org.obywatel.ktoggl</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <packaging>aar</packaging>
@@ -21,15 +21,15 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.ktoggl</groupId>
+            <artifactId>ktoggl-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
             <version>4.1.1.4</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.obywatel.ktoggl</groupId>
-            <artifactId>ktoggl-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>

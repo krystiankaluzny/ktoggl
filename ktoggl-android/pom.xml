@@ -17,7 +17,6 @@
         <android.platform>19</android.platform>
         <android.debug>false</android.debug>
         <proguard.skip>true</proguard.skip>
-        <android.sdk.path>/home/obywatel/programs/android_sdk</android.sdk.path>
     </properties>
 
     <dependencies>

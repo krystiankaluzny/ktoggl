@@ -2,16 +2,31 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <artifactId>ktoggl</artifactId>
         <groupId>org.obywatel.ktoggl</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
-
+    <packaging>aar</packaging>
     <artifactId>ktoggl-android</artifactId>
 
+    <properties>
+        <!-- Android configs -->
+        <android.platform>19</android.platform>
+        <android.debug>false</android.debug>
+        <proguard.skip>true</proguard.skip>
+        <android.sdk.path>/home/obywatel/programs/android_sdk</android.sdk.path>
+    </properties>
+
     <dependencies>
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>android</artifactId>
+            <version>4.1.1.4</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.obywatel.ktoggl</groupId>
             <artifactId>ktoggl-core</artifactId>
@@ -25,4 +40,15 @@
             <type>aar</type>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.simpligility.maven.plugins</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <version>4.5.0</version>
+                <extensions>true</extensions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -17,17 +17,12 @@
     <properties>
         <kotlin.version>1.2.61</kotlin.version>
         <junit.version>5.3.1</junit.version>
-        <spek.version>2.0.0-alpha.2</spek.version>
     </properties>
 
     <repositories>
         <repository>
             <id>jcenter</id>
             <url>https://jcenter.bintray.com/</url>
-        </repository>
-        <repository>
-            <id>spek-dev</id>
-            <url>https://dl.bintray.com/spekframework/spek-dev</url>
         </repository>
     </repositories>
 
@@ -37,35 +32,6 @@
             <artifactId>kotlin-stdlib-jdk7</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.spekframework.spek2</groupId>
-            <artifactId>spek-dsl-jvm</artifactId>
-            <version>${spek.version}</version>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.jetbrains.kotlin</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.spekframework.spek2</groupId>
-            <artifactId>spek-runner-junit5</artifactId>
-            <version>${spek.version}</version>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.jetbrains.kotlin</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.junit.platform</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -121,11 +87,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <includes>
-                        <include>**/*Spec.*</include>
-                    </includes>
-                </configuration>
             </plugin>
         </plugins>
     </build>

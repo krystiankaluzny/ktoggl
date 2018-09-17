@@ -12,6 +12,7 @@
     <modules>
         <module>ktoggl-core</module>
         <module>ktoggl-android</module>
+        <module>ktoggl-jvm</module>
     </modules>
 
     <properties>

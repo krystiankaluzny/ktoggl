@@ -30,3 +30,21 @@ internal data class User(
     val openid_enabled: Boolean,
     val timezone: String
 )
+
+internal data class UpdateUser(
+    val email: String?,
+    val fullname: String?,
+    val timeofday_format: String?,
+    val date_format: String?,
+    val store_start_and_stop_time: Boolean?,
+    val beginning_of_week: Byte?,
+    val send_product_emails: Boolean?,
+    val send_weekly_report: Boolean?,
+    val send_timer_notifications: Boolean?,
+    val timezone: String?
+)
+
+internal data class UpdateUserPassword(
+    val current_password: String,
+    val password: String
+)

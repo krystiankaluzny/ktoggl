@@ -1,6 +1,6 @@
 package org.ktoggl.request
 
-data class BaseReportParameters(
+open class BaseReportParameters(
     val userAgent: String? = null,
     val fromTimestamp: Long? = null,
     val toTimestamp: Long? = null,

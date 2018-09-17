@@ -2,15 +2,15 @@ package org.ktoggl.internal.retrofit
 
 import org.ktoggl.internal.retrofit.dto.*
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 internal interface TogglApi {
 
     @GET("me")
-    fun me(): Call<UserResponse>
+    fun getMe(): Call<UserResponse>
+
+    @PUT("me")
+    fun updateMe(): Call<UserResponse>
 
     @GET("workspaces")
     fun workspaces(): Call<List<Workspace>>
@@ -19,5 +19,5 @@ internal interface TogglApi {
     fun workspaceProjects(@Path("workspaceId") workspaceId: Long): Call<List<Project>>
 
     @POST("time_entries")
-    fun createTimeEntry(@Body timeEntryRequest: TimeEntryRequest) : Call<TimeEntryResponse>
+    fun createTimeEntry(@Body timeEntryRequest: TimeEntryRequest): Call<TimeEntryResponse>
 }

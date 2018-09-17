@@ -7,5 +7,5 @@ import org.ktoggl.internal.retrofit.TogglApi
 
 internal class TogglUserClientImpl(private val p: TimeUtilProvider, private val togglApi: TogglApi) : TogglUserClient {
 
-    override fun getCurrentUser(): User? = togglApi.me().execute().body()?.user?.toExternal(p)
+    override fun getCurrentUser(): User? = togglApi.getMe().execute().body()?.user?.toExternal(p)
 }

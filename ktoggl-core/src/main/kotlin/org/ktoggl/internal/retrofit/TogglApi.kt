@@ -10,7 +10,7 @@ internal interface TogglApi {
     fun getMe(): Call<UserResponse>
 
     @PUT("me")
-    fun updateMe(): Call<UserResponse>
+    fun updateMe(@Body user: UserUpdateRequest): Call<UserResponse>
 
     @GET("workspaces")
     fun workspaces(): Call<List<Workspace>>

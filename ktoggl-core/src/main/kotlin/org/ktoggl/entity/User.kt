@@ -27,3 +27,10 @@ enum class Day(val value: Byte) {
 
     companion object : EnumCompanion<Byte, Day>(Day.values().associateBy(Day::value))
 }
+
+data class UserData(
+    val fullName: String? = null,
+    val email: String? = null,
+    val beginningOfWeek: Day? = null,
+    val timezone: String? = null
+)

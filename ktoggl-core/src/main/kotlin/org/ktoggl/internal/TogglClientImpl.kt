@@ -3,6 +3,8 @@ package org.ktoggl.internal
 import org.ktoggl.TimeUtilProvider
 import org.ktoggl.TogglClient
 import org.ktoggl.entity.TimeEntry
+import org.ktoggl.entity.User
+import org.ktoggl.entity.UserData
 import org.ktoggl.internal.retrofit.TogglApi
 import org.ktoggl.internal.retrofit.TogglReportApi
 import org.ktoggl.request.DetailedReportParameters
@@ -17,6 +19,7 @@ internal class TogglClientImpl(p: TimeUtilProvider, togglApi: TogglApi, togglRep
     private val togglReportClient = TogglReportClientImpl(p, togglReportApi)
 
     override fun getCurrentUser() = togglUserClient.getCurrentUser()
+    override fun updateCurrentUser(userData: UserData) = togglUserClient.updateCurrentUser(userData)
 
     override fun getWorkspaces() = togglWorkspaceClient.getWorkspaces()
     override fun getWorkspaceProjects(id: Long) = togglWorkspaceClient.getWorkspaceProjects(id)

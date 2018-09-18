@@ -21,6 +21,20 @@ internal fun org.ktoggl.internal.retrofit.dto.User.toExternal(p: TimeUtilProvide
         lastUpdateTimestamp = p.toEpochSecond(at)
     )
 
+internal fun UserData.toInternal() =
+    org.ktoggl.internal.retrofit.dto.UserData(
+        email = email,
+        fullname = fullName,
+        timeofday_format = null,
+        date_format = null,
+        store_start_and_stop_time = null,
+        beginning_of_week = beginningOfWeek?.value,
+        send_product_emails = null,
+        send_weekly_report = null,
+        send_timer_notifications = null,
+        timezone = timezone
+    )
+
 internal fun org.ktoggl.internal.retrofit.dto.Workspace.toExternal(p: TimeUtilProvider) =
     Workspace(
         id = id,

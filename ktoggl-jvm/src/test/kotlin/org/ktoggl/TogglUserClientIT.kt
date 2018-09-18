@@ -1,12 +1,11 @@
 package org.ktoggl
 
-import org.amshove.kluent.shouldBe
-import org.amshove.kluent.shouldBeEqualTo
-import org.amshove.kluent.shouldEqualTo
-import org.amshove.kluent.shouldNotBeNull
+import org.amshove.kluent.*
 import org.junit.jupiter.api.Test
 import org.ktoggl.android.JvmTogglClientBuilder
 import org.ktoggl.entity.Day
+import org.ktoggl.jvm.entity.creationTime
+import java.time.OffsetDateTime
 
 class TogglUserClientIT {
 
@@ -29,6 +28,7 @@ class TogglUserClientIT {
                 it.language shouldBeEqualTo "en_US"
                 it.imageUrl shouldBeEqualTo "https://assets.toggl.com/avatars/5bd169bb81845e31568fa773b404d660.png"
                 it.creationTimestamp shouldEqualTo 1537112454
+                it.creationTime shouldEqual OffsetDateTime.parse("2018-09-16T15:40:54Z")
                 it.timezone shouldBeEqualTo "Europe/Warsaw"
             }
     }

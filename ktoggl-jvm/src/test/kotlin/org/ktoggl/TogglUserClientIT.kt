@@ -4,10 +4,12 @@ import org.amshove.kluent.shouldBe
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldEqual
 import org.amshove.kluent.shouldEqualTo
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.ktoggl.android.JvmTogglClientBuilder
 import org.ktoggl.entity.Day
 import org.ktoggl.entity.UserData
+import org.ktoggl.entity.UserPassword
 import org.ktoggl.jvm.entity.creationTime
 import java.time.OffsetDateTime
 
@@ -52,6 +54,19 @@ class TogglUserClientIT {
 
         userBack.apply {
             fullName shouldBeEqualTo oldFullName
+        }
+    }
+
+    @Test
+    @Disabled("We don't want expose and update password every time when tests run")
+    fun `updateCurrentUserPassword should work`() {
+
+        //this isn't real password, trust me
+        val userPassword = UserPassword("dfvgh5467", "dfvgh5467XX")
+        val user = togglUserClient.updateCurrentUserPassword(userPassword)
+
+        user.apply {
+            apiToken shouldBeEqualTo apiToken
         }
     }
 }

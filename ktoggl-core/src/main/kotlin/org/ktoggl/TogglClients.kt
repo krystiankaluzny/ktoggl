@@ -16,6 +16,7 @@ interface TogglUserClient {
 
     fun getCurrentUser(): User
     fun updateCurrentUser(userData: UserData): User
+    fun updateCurrentUserPassword(userPassword: UserPassword): User
 }
 
 interface TogglWorkspaceClient {

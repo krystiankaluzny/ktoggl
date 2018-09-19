@@ -34,3 +34,8 @@ data class UserData(
     val beginningOfWeek: Day? = null,
     val timezone: String? = null
 )
+
+data class UserPassword(
+    val currentPassword: String,
+    val newPassword: String
+)

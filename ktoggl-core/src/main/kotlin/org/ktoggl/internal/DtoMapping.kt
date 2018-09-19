@@ -35,6 +35,12 @@ internal fun UserData.toInternal() =
         timezone = timezone
     )
 
+internal fun UserPassword.toInternal() =
+    org.ktoggl.internal.retrofit.dto.UserPassword(
+        current_password = currentPassword,
+        password = newPassword
+    )
+
 internal fun org.ktoggl.internal.retrofit.dto.Workspace.toExternal(p: TimeUtilProvider) =
     Workspace(
         id = id,

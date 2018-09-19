@@ -2,6 +2,8 @@ dist: trusty
 sudo: false
 language: java
 jdk:
-  - openjdk7
   - oraclejdk8
   - oraclejdk9
+
+install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -pl '!ktoggl-android'
+script: mvn verify -B -pl '!ktoggl-android'

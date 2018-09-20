@@ -5,5 +5,5 @@ jdk:
   - oraclejdk8
   - oraclejdk9
 
-install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -pl '!ktoggl-android'
-script: mvn verify -B -pl '!ktoggl-android'
+install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -Pci
+script: mvn clean verify -B -Pci jacoco:report coveralls:report

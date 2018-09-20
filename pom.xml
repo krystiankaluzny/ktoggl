@@ -9,13 +9,10 @@
     <version>1.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
-    <modules>
-        <module>ktoggl-core</module>
-        <module>ktoggl-android</module>
-        <module>ktoggl-jvm</module>
-    </modules>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        
         <kotlin.version>1.2.61</kotlin.version>
         <junit.version>5.3.1</junit.version>
     </properties>
@@ -84,4 +81,47 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>pord</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>ktoggl-core</module>
+                <module>ktoggl-android</module>
+                <module>ktoggl-jvm</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>ci</id>
+            <modules>
+                <module>ktoggl-core</module>
+                <module>ktoggl-jvm</module>
+            </modules>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>0.8.2</version>
+                        <executions>
+                            <execution>
+                                <id>prepare-agent</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.eluder.coveralls</groupId>
+                        <artifactId>coveralls-maven-plugin</artifactId>
+                        <version>4.3.0</version>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

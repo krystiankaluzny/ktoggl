@@ -22,6 +22,7 @@ interface TogglUserClient {
 interface TogglWorkspaceClient {
 
     fun getWorkspaces(): List<Workspace>
+    fun getWorkspace(workspaceId: Long) : Workspace?
     fun getWorkspaceProjects(id: Long): List<Project>
 }
 

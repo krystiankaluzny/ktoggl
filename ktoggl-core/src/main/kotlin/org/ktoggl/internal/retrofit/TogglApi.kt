@@ -13,7 +13,10 @@ internal interface TogglApi {
     fun updateMe(@Body user: UserUpdateRequest): Call<UserResponse>
 
     @GET("workspaces")
-    fun workspaces(): Call<List<Workspace>>
+    fun getWorkspaces(): Call<List<Workspace>>
+
+    @GET("workspaces/{workspaceId}")
+    fun getWorkspace(@Path("workspaceId") workspaceId: Long): Call<WorkspaceResponse>
 
     @GET("workspaces/{workspaceId}/projects")
     fun workspaceProjects(@Path("workspaceId") workspaceId: Long): Call<List<Project>>

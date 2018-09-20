@@ -1,5 +1,9 @@
 package org.ktoggl.internal.retrofit.dto
 
+internal data class WorkspaceResponse(
+    val data: Workspace
+)
+
 internal data class Workspace(
     val id: Long,
     val name: String,

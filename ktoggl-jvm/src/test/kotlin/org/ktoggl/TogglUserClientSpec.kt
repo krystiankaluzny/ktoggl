@@ -33,7 +33,7 @@ class TogglUserClientSpec : StringSpec({
         }
     }
 
-    "pdateCurrentUser with new full name and try update it back" {
+    "updateCurrentUser with new full name and try update it back" {
 
         val oldFullName = "Enormous2calm4"
         val newFullName = "NewFullName"

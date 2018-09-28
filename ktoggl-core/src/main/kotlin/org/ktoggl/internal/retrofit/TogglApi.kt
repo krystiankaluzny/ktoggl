@@ -18,6 +18,9 @@ internal interface TogglApi {
     @GET("workspaces/{workspaceId}")
     fun getWorkspace(@Path("workspaceId") workspaceId: Long): Call<WorkspaceResponse>
 
+    @PUT("workspaces/{workspaceId}")
+    fun updateWorkspace(@Path("workspaceId") workspaceId: Long, @Body workspace: WorkspaceUpdateRequest): Call<WorkspaceResponse>
+
     @GET("workspaces/{workspaceId}/projects")
     fun workspaceProjects(@Path("workspaceId") workspaceId: Long): Call<List<Project>>
 

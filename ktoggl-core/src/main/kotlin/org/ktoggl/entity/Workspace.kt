@@ -24,3 +24,13 @@ enum class RoundingType(val value: Byte) {
 
     companion object : EnumCompanion<Byte, RoundingType>(RoundingType.values().associateBy(RoundingType::value))
 }
+
+data class WorkspaceData(
+    val name: String? = null,
+    val defaultHourlyRate: Double? = null,
+    val defaultCurrency: String? = null,
+    val onlyAdminsMayCreateProjects: Boolean? = null,
+    val onlyAdminsSeeBillableRates: Boolean? = null,
+    val rounding: RoundingType? = null,
+    val roundingMinutes: Int? = null
+)

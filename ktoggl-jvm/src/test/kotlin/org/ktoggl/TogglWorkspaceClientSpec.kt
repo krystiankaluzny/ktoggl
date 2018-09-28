@@ -6,6 +6,7 @@ import io.kotlintest.shouldNotBe
 import io.kotlintest.specs.StringSpec
 import org.ktoggl.android.JvmTogglClientBuilder
 import org.ktoggl.entity.RoundingType
+import org.ktoggl.entity.WorkspaceData
 
 class TogglWorkspaceClientSpec : StringSpec({
 
@@ -50,6 +51,24 @@ class TogglWorkspaceClientSpec : StringSpec({
             rounding shouldBe RoundingType.ROUND_UP
             roundingMinutes shouldBe 0
             logoUrl.shouldBeEmpty()
+        }
+    }
+
+    "updateWorkspace should correct update currency" {
+
+        val oldName = "Enormous2calm4's workspace"
+        val newName = "Enormous2calm4's new"
+
+        val workspace = togglWorkspaceClient.updateWorkspace(2963000, WorkspaceData(name = newName))
+
+        workspace.apply {
+            name shouldBe newName
+        }
+
+        val workspaceBack = togglWorkspaceClient.updateWorkspace(2963000, WorkspaceData(name = oldName))
+
+        workspaceBack.apply {
+            name shouldBe oldName
         }
     }
 })

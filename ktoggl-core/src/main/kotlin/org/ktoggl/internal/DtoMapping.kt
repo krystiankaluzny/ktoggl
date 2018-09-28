@@ -56,6 +56,16 @@ internal fun org.ktoggl.internal.retrofit.dto.Workspace.toExternal(p: TimeUtilPr
         defaultHourlyRate = default_hourly_rate ?: 0.0,
         lastUpdateTimestamp = p.toEpochSecond(at)
     )
+internal fun WorkspaceData.toInternal() =
+    org.ktoggl.internal.retrofit.dto.WorkspaceData(
+        name = name,
+        default_currency = defaultCurrency,
+        default_hourly_rate = defaultHourlyRate,
+        only_admins_may_create_projects = onlyAdminsMayCreateProjects,
+        only_admins_see_billable_rates = onlyAdminsSeeBillableRates,
+        rounding = rounding?.value,
+        rounding_minutes = roundingMinutes
+    )
 
 internal fun org.ktoggl.internal.retrofit.dto.Project.toExternal(p: TimeUtilProvider) =
     Project(

@@ -29,9 +29,9 @@ internal class TogglWorkspaceClientImpl(private val p: TimeUtilProvider, private
     }
 
 
-    override fun getWorkspaceProjects(id: Long): List<Project> {
+    override fun getWorkspaceProjects(workspaceId: Long): List<Project> {
 
-        val workspaceProjects = togglApi.workspaceProjects(id).execute().body() ?: return emptyList()
+        val workspaceProjects = togglApi.workspaceProjects(workspaceId).execute().body() ?: return emptyList()
 
         return workspaceProjects.map { it.toExternal(p) }
     }

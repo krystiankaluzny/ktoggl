@@ -20,3 +20,5 @@ If you think that something should be added faster, feel free to create an issue
 4. Update workspace user
 5. Delete workspace user
 6. Get workspace users
+7. Get workspace clients
+8. Get workspace groups

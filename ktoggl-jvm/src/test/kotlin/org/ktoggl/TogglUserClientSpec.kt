@@ -11,8 +11,7 @@ import java.time.OffsetDateTime
 
 class TogglUserClientSpec : StringSpec({
 
-    val apiToken = "0723f331421f3860603b497ba01f790d"
-    val togglUserClient: TogglUserClient = JvmTogglClientBuilder().build(apiToken)
+    val togglUserClient: TogglUserClient = JvmTogglClientBuilder().build(ApiToken.value)
 
     "getCurrentUser should return test user" {
 

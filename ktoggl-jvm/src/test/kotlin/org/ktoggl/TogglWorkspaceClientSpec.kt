@@ -10,8 +10,7 @@ import org.ktoggl.entity.WorkspaceData
 
 class TogglWorkspaceClientSpec : StringSpec({
 
-    val apiToken = "0723f331421f3860603b497ba01f790d"
-    val togglWorkspaceClient: TogglWorkspaceClient = JvmTogglClientBuilder().build(apiToken)
+    val togglWorkspaceClient: TogglWorkspaceClient = JvmTogglClientBuilder().build(ApiToken.value)
 
     "getWorkspaces should return one test user's workspaces" {
 

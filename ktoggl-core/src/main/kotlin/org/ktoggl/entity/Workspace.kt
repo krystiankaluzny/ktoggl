@@ -34,3 +34,7 @@ data class WorkspaceData(
     val rounding: RoundingType? = null,
     val roundingMinutes: Int? = null
 )
+
+enum class ProjectStateFilter {
+    ACTIVE, INACTIVE, ANY
+}

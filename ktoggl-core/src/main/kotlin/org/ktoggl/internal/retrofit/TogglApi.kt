@@ -22,7 +22,10 @@ internal interface TogglApi {
     fun updateWorkspace(@Path("workspaceId") workspaceId: Long, @Body workspace: WorkspaceUpdateRequest): Call<WorkspaceResponse>
 
     @GET("workspaces/{workspaceId}/projects")
-    fun workspaceProjects(@Path("workspaceId") workspaceId: Long): Call<List<Project>>
+    fun workspaceProjects(@Path("workspaceId") workspaceId: Long,
+                          @Query("active") active: String,
+                          @Query("actual_hours") activeHours: String,
+                          @Query("only_templates") onlyTemplates: String): Call<List<Project>>
 
     @POST("time_entries")
     fun createTimeEntry(@Body timeEntryRequest: TimeEntryRequest): Call<TimeEntryResponse>

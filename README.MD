@@ -22,3 +22,4 @@ If you think that something should be added faster, feel free to create an issue
 6. Get workspace users
 7. Get workspace clients
 8. Get workspace groups
+9. Get workspace tasks

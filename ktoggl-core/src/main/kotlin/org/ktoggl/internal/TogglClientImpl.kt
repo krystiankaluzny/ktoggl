@@ -24,6 +24,7 @@ internal class TogglClientImpl(p: TimeUtilProvider, togglApi: TogglApi, togglRep
     override fun getWorkspace(workspaceId: Long) = togglWorkspaceClient.getWorkspace(workspaceId)
     override fun updateWorkspace(workspaceId: Long, workspaceData: WorkspaceData)= togglWorkspaceClient.updateWorkspace(workspaceId, workspaceData)
     override fun getWorkspaceProjects(workspaceId: Long, projectStateFilter: ProjectStateFilter) = togglWorkspaceClient.getWorkspaceProjects(workspaceId, projectStateFilter)
+    override fun getWorkspaceTags(workspaceId: Long) = togglWorkspaceClient.getWorkspaceTags(workspaceId)
 
     override fun getTimeEntry(timeEntryId: Long) = togglTimeEntityClient.getTimeEntry(timeEntryId)
     override fun getRunningTimeEntry() = togglTimeEntityClient.getRunningTimeEntry()

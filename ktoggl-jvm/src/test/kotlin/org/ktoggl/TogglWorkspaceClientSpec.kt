@@ -6,10 +6,7 @@ import io.kotlintest.shouldBe
 import io.kotlintest.shouldNotBe
 import io.kotlintest.specs.StringSpec
 import org.ktoggl.android.JvmTogglClientBuilder
-import org.ktoggl.entity.Project
-import org.ktoggl.entity.ProjectStateFilter
-import org.ktoggl.entity.RoundingType
-import org.ktoggl.entity.WorkspaceData
+import org.ktoggl.entity.*
 
 class TogglWorkspaceClientSpec : StringSpec({
 
@@ -97,7 +94,7 @@ class TogglWorkspaceClientSpec : StringSpec({
         )
     }
 
-    "f:getWorkspaceProjects with ProjectStateFilter.ANY should return both active and archived projects" {
+    "getWorkspaceProjects with ProjectStateFilter.ANY should return both active and archived projects" {
 
         val projects = togglWorkspaceClient.getWorkspaceProjects(2963000, ProjectStateFilter.ANY)
 
@@ -109,6 +106,15 @@ class TogglWorkspaceClientSpec : StringSpec({
             Project(id = 140214627, name = "Project 5", workspaceId = 2963000, clientId = null, active = true, private = true, creationTimestamp = 1537112710, colorId = 13, color = -1964795),
             Project(id = 140214657, name = "Project 6", workspaceId = 2963000, clientId = null, active = true, private = true, creationTimestamp = 1537112717, colorId = 3, color = -292076),
             Project(id = 144119708, name = "Project 7 inactive", workspaceId = 2963000, clientId = null, active = false, private = true, creationTimestamp = 1538597796, colorId = 12, color = -7798784)
+        )
+    }
+
+    "getWorkspaceTags should return all tags" {
+        val tags = togglWorkspaceClient.getWorkspaceTags(2963000)
+
+        tags.shouldContainExactlyInAnyOrder(
+            Tag(id=4976917, workspaceId=2963000, name="abc"),
+            Tag(id=4976916, workspaceId=2963000, name="test")
         )
     }
 })

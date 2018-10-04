@@ -25,6 +25,7 @@ interface TogglWorkspaceClient {
     fun getWorkspace(workspaceId: Long) : Workspace?
     fun updateWorkspace(workspaceId: Long, workspaceData: WorkspaceData) : Workspace
     fun getWorkspaceProjects(workspaceId: Long, projectStateFilter: ProjectStateFilter = ProjectStateFilter.ACTIVE): List<Project>
+    fun getWorkspaceTags(workspaceId: Long): List<Tag>
 }
 
 interface TogglTimeEntryClient {

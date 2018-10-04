@@ -2,10 +2,7 @@ package org.ktoggl.internal
 
 import org.ktoggl.TimeUtilProvider
 import org.ktoggl.TogglWorkspaceClient
-import org.ktoggl.entity.Project
-import org.ktoggl.entity.ProjectStateFilter
-import org.ktoggl.entity.Workspace
-import org.ktoggl.entity.WorkspaceData
+import org.ktoggl.entity.*
 import org.ktoggl.internal.retrofit.TogglApi
 import org.ktoggl.internal.retrofit.dto.WorkspaceResponse
 import org.ktoggl.internal.retrofit.dto.WorkspaceUpdateRequest
@@ -14,7 +11,7 @@ internal class TogglWorkspaceClientImpl(private val p: TimeUtilProvider, private
 
     override fun getWorkspaces(): List<Workspace> {
 
-        val workspaces = togglApi.getWorkspaces().execute().body() ?: return emptyList()
+        val workspaces = togglApi.getWorkspaces().execute().body() ?: emptyList()
 
         return workspaces.map { it.toExternal(p) }
     }
@@ -38,8 +35,15 @@ internal class TogglWorkspaceClientImpl(private val p: TimeUtilProvider, private
             else -> "both"
         }
 
-        val workspaceProjects = togglApi.workspaceProjects(workspaceId, active, "false", "false").execute().body() ?: return emptyList()
+        val workspaceProjects = togglApi.getWorkspaceProjects(workspaceId, active, "false", "false").execute().body() ?: emptyList()
 
         return workspaceProjects.map { it.toExternal(p) }
+    }
+
+    override fun getWorkspaceTags(workspaceId: Long): List<Tag> {
+
+        val tags = togglApi.getWorkspaceTags(workspaceId).execute().body() ?: emptyList()
+
+        return tags.map { it.toExternal() }
     }
 }

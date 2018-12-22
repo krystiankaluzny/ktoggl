@@ -37,7 +37,7 @@ internal class TogglWorkspaceClientImpl(private val p: TimeUtilProvider, private
 
         val workspaceProjects = togglApi.getWorkspaceProjects(workspaceId, active, "false", "false").execute().body() ?: emptyList()
 
-        return workspaceProjects.map { it.toExternal(p) }
+        return workspaceProjects.map { it.toExternal() }
     }
 
     override fun getWorkspaceTags(workspaceId: Long): List<Tag> {

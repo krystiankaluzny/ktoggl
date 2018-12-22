@@ -76,12 +76,12 @@ class TogglWorkspaceClientSpec : StringSpec({
         val projects = togglWorkspaceClient.getWorkspaceProjects(2963000, ProjectStateFilter.ACTIVE)
 
         projects.shouldContainExactlyInAnyOrder(
-            Project(id = 140214510, name = "Project 1", workspaceId = 2963000, clientId = null, active = true, private = true, creationTimestamp = 1537112683, colorId = 3, color = -292076),
-            Project(id = 140214541, name = "Project 2", workspaceId = 2963000, clientId = null, active = true, private = true, creationTimestamp = 1537112690, colorId = 5, color = -11810816),
-            Project(id = 140214570, name = "Project 3", workspaceId = 2963000, clientId = null, active = true, private = true, creationTimestamp = 1537112697, colorId = 7, color = -1992058),
-            Project(id = 140214602, name = "Project 4", workspaceId = 2963000, clientId = null, active = true, private = true, creationTimestamp = 1537112704, colorId = 0, color = -16340235),
-            Project(id = 140214627, name = "Project 5", workspaceId = 2963000, clientId = null, active = true, private = true, creationTimestamp = 1537112710, colorId = 13, color = -1964795),
-            Project(id = 140214657, name = "Project 6", workspaceId = 2963000, clientId = null, active = true, private = true, creationTimestamp = 1537112717, colorId = 3, color = -292076)
+            Project(id = 140214510, name = "Project 1", workspaceId = 2963000, clientId = null, active = true, private = true, colorId = 3, color = -292076),
+            Project(id = 140214541, name = "Project 2", workspaceId = 2963000, clientId = null, active = true, private = true, colorId = 5, color = -11810816),
+            Project(id = 140214570, name = "Project 3", workspaceId = 2963000, clientId = null, active = true, private = true, colorId = 7, color = -1992058),
+            Project(id = 140214602, name = "Project 4", workspaceId = 2963000, clientId = null, active = true, private = true, colorId = 0, color = -16340235),
+            Project(id = 140214627, name = "Project 5", workspaceId = 2963000, clientId = null, active = true, private = true, colorId = 13, color = -1964795),
+            Project(id = 140214657, name = "Project 6", workspaceId = 2963000, clientId = null, active = true, private = true, colorId = 3, color = -292076)
         )
     }
 
@@ -90,7 +90,7 @@ class TogglWorkspaceClientSpec : StringSpec({
         val projects = togglWorkspaceClient.getWorkspaceProjects(2963000, ProjectStateFilter.INACTIVE)
 
         projects.shouldContainExactlyInAnyOrder(
-            Project(id = 144119708, name = "Project 7 inactive", workspaceId = 2963000, clientId = null, active = false, private = true, creationTimestamp = 1538597796, colorId = 12, color = -7798784)
+            Project(id = 144119708, name = "Project 7 inactive", workspaceId = 2963000, clientId = null, active = false, private = true, colorId = 12, color = -7798784)
         )
     }
 
@@ -99,13 +99,13 @@ class TogglWorkspaceClientSpec : StringSpec({
         val projects = togglWorkspaceClient.getWorkspaceProjects(2963000, ProjectStateFilter.ANY)
 
         projects.shouldContainExactlyInAnyOrder(
-            Project(id = 140214510, name = "Project 1", workspaceId = 2963000, clientId = null, active = true, private = true, creationTimestamp = 1537112683, colorId = 3, color = -292076),
-            Project(id = 140214541, name = "Project 2", workspaceId = 2963000, clientId = null, active = true, private = true, creationTimestamp = 1537112690, colorId = 5, color = -11810816),
-            Project(id = 140214570, name = "Project 3", workspaceId = 2963000, clientId = null, active = true, private = true, creationTimestamp = 1537112697, colorId = 7, color = -1992058),
-            Project(id = 140214602, name = "Project 4", workspaceId = 2963000, clientId = null, active = true, private = true, creationTimestamp = 1537112704, colorId = 0, color = -16340235),
-            Project(id = 140214627, name = "Project 5", workspaceId = 2963000, clientId = null, active = true, private = true, creationTimestamp = 1537112710, colorId = 13, color = -1964795),
-            Project(id = 140214657, name = "Project 6", workspaceId = 2963000, clientId = null, active = true, private = true, creationTimestamp = 1537112717, colorId = 3, color = -292076),
-            Project(id = 144119708, name = "Project 7 inactive", workspaceId = 2963000, clientId = null, active = false, private = true, creationTimestamp = 1538597796, colorId = 12, color = -7798784)
+            Project(id = 140214510, name = "Project 1", workspaceId = 2963000, clientId = null, active = true, private = true, colorId = 3, color = -292076),
+            Project(id = 140214541, name = "Project 2", workspaceId = 2963000, clientId = null, active = true, private = true, colorId = 5, color = -11810816),
+            Project(id = 140214570, name = "Project 3", workspaceId = 2963000, clientId = null, active = true, private = true, colorId = 7, color = -1992058),
+            Project(id = 140214602, name = "Project 4", workspaceId = 2963000, clientId = null, active = true, private = true, colorId = 0, color = -16340235),
+            Project(id = 140214627, name = "Project 5", workspaceId = 2963000, clientId = null, active = true, private = true, colorId = 13, color = -1964795),
+            Project(id = 140214657, name = "Project 6", workspaceId = 2963000, clientId = null, active = true, private = true, colorId = 3, color = -292076),
+            Project(id = 144119708, name = "Project 7 inactive", workspaceId = 2963000, clientId = null, active = false, private = true, colorId = 12, color = -7798784)
         )
     }
 

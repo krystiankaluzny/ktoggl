@@ -7,7 +7,6 @@ data class Project(
     val clientId: Long?,
     val active: Boolean,
     val private: Boolean,
-    val creationTimestamp: Long,
     val colorId: Int,
     val color: Int
 )

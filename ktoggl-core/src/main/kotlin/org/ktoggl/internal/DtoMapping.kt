@@ -67,7 +67,7 @@ internal fun WorkspaceData.toInternal() =
         rounding_minutes = roundingMinutes
     )
 
-internal fun org.ktoggl.internal.retrofit.dto.Project.toExternal(p: TimeUtilProvider) =
+internal fun org.ktoggl.internal.retrofit.dto.Project.toExternal() =
     Project(
         id = id,
         name = name,
@@ -75,7 +75,6 @@ internal fun org.ktoggl.internal.retrofit.dto.Project.toExternal(p: TimeUtilProv
         clientId = cid,
         active = active,
         private = is_private,
-        creationTimestamp = p.toEpochSecond(at),
         colorId = color,
         color = hex_color.fromHexColorToInt()
     )

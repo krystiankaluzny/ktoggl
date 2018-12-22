@@ -149,7 +149,7 @@ internal fun TimeEntry.toInternal(p: TimeUtilProvider) =
 
 internal fun org.ktoggl.internal.retrofit.dto.Tag.toExternal() =
     Tag(
-        id = id,
-        workspaceId = wid,
+        id = id!!,
+        workspaceId = wid!!,
         name = name
     )

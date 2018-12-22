@@ -14,6 +14,7 @@ internal class TogglClientImpl(p: TimeUtilProvider, togglApi: TogglApi, togglRep
     private val togglUserClient = TogglUserClientImpl(p, togglApi)
     private val togglWorkspaceClient = TogglWorkspaceClientImpl(p, togglApi)
     private val togglTimeEntityClient = TogglTimeEntityClientImpl(p, togglApi)
+    private val togglTagClient = TogglTagClientImpl(togglApi)
     private val togglReportClient = TogglReportClientImpl(p, togglReportApi)
 
     override fun getCurrentUser() = togglUserClient.getCurrentUser()
@@ -34,6 +35,10 @@ internal class TogglClientImpl(p: TimeUtilProvider, togglApi: TogglApi, togglRep
     override fun updateTimeEntry(timeEntry: TimeEntry) = togglTimeEntityClient.updateTimeEntry(timeEntry)
     override fun deleteTimeEntry(timeEntryId: Long) = togglTimeEntityClient.deleteTimeEntry(timeEntryId)
     override fun updateTimeEntriesTags(timeEntryIds: List<Long>, tags: List<String>, updateTagsAction: org.ktoggl.TogglTimeEntryClient.UpdateTagsAction) = togglTimeEntityClient.updateTimeEntriesTags(timeEntryIds, tags, updateTagsAction)
+
+    override fun createTag(workspaceId: Long, name: String): Tag? = togglTagClient.createTag(workspaceId, name)
+    override fun updateTag(tagId: Long, newName: String): Tag = togglTagClient.updateTag(tagId, newName)
+    override fun deleteTag(tagId: Long): Boolean = togglTagClient.deleteTag(tagId)
 
     override fun getWeeklyReport(workspaceId: Long, weeklyReportParameters: WeeklyReportParameters) = togglReportClient.getWeeklyReport(workspaceId, weeklyReportParameters)
     override fun getDetailedReport(workspaceId: Long, detailedReportParameters: DetailedReportParameters) = togglReportClient.getDetailedReport(workspaceId, detailedReportParameters)

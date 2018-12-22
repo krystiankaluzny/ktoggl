@@ -50,7 +50,7 @@ If you think that something should be added faster, feel free to create an issue
     5. Create multiple project users for single project - NO
     6. Mass update for project users - NO
     7. Delete multiple project users - NO
-   
+
 7. Projects
     1. Create project - NO
     2. Get project data - NO
@@ -61,9 +61,9 @@ If you think that something should be added faster, feel free to create an issue
     7. Delete multiple projects - NO
 
 8. Tags
-    1. Create tag - NO
-    2. Update a tag - NO
-    3. Delete a tag - NO
+    1. Create tag - YES
+    2. Update a tag - YES
+    3. Delete a tag - YES
 
 9. Tasks
     1. Create a task - NO

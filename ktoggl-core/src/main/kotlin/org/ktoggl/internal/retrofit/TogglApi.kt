@@ -32,4 +32,13 @@ internal interface TogglApi {
 
     @POST("time_entries")
     fun createTimeEntry(@Body timeEntryRequest: TimeEntryRequest): Call<TimeEntryResponse>
+
+    @POST("tags")
+    fun createTag(@Body tagRequest: TagRequest): Call<TagResponse>
+
+    @PUT("tags/{tagId}")
+    fun updateTag(@Path("tagId") tagId: Long, @Body tagRequest: TagRequest): Call<TagResponse>
+
+    @DELETE("tags/{tagId}")
+    fun deleteTag(@Path("tagId") tagId: Long): Call<Void>
 }

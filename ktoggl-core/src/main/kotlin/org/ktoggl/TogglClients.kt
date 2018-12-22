@@ -10,6 +10,7 @@ interface TogglClient :
     TogglUserClient,
     TogglWorkspaceClient,
     TogglTimeEntryClient,
+    TogglTagClient,
     TogglReportClient
 
 interface TogglUserClient {
@@ -42,6 +43,13 @@ interface TogglTimeEntryClient {
     enum class UpdateTagsAction {
         OVERRIDE, ADD, REMOVE
     }
+}
+
+interface TogglTagClient {
+
+    fun createTag(workspaceId: Long, name: String): Tag?
+    fun updateTag(tagId: Long, newName: String): Tag
+    fun deleteTag(tagId: Long): Boolean
 }
 
 interface TogglReportClient {

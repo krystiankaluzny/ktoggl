@@ -85,7 +85,7 @@
 
     <profiles>
         <profile>
-            <id>pord</id>
+            <id>prod</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>

@@ -36,7 +36,7 @@ If you think that something should be added faster, feel free to create an issue
 
 4. Dashboard
     1. Get Dashboard data - NO
- 
+
 5. Groups
     1. Create a group - NO
     2. Update a group - NO

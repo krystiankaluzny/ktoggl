@@ -53,7 +53,7 @@ class TogglWorkspaceClientSpec : StringSpec({
         }
     }
 
-    "updateWorkspace should correct update currency" {
+    "updateWorkspace should correct update workspace's name" {
 
         val oldName = "Enormous2calm4's workspace"
         val newName = "Enormous2calm4's new"

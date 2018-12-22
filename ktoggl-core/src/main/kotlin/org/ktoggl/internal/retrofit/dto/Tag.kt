@@ -15,5 +15,6 @@ internal data class TagRequest(
 internal data class Tag(
     val id: Long?,
     val wid: Long?,
-    val name: String
+    val name: String,
+    val at: String? = null
 )

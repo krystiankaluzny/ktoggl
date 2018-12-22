@@ -13,7 +13,7 @@ internal class TogglTagClientImpl(private val togglApi: TogglApi) : TogglTagClie
     }
 
     override fun updateTag(tagId: Long, newName: String): Tag {
-        val tagDto = org.ktoggl.internal.retrofit.dto.Tag(null,  null, newName)
+        val tagDto = org.ktoggl.internal.retrofit.dto.Tag(null, null, newName)
         return togglApi.updateTag(tagId, TagRequest(tagDto)).execute().body()!!.tag.toExternal()
     }
 

@@ -14,7 +14,7 @@ class TogglTagClientSpec : StringSpec({
 
     "createTag, deleteTag sequence should be executable and list of all tags should not changed" {
 
-        val tagCreated = togglTagClient.createTag(2963000, "test_tag")!!
+        val tagCreated = togglTagClient.createTag(2963000, "test_tag")
         tagCreated.apply {
             id shouldNotBe null
             workspaceId shouldBe 2963000

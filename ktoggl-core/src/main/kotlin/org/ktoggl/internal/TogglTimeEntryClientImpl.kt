@@ -6,10 +6,30 @@ import org.ktoggl.entity.TimeEntry
 import org.ktoggl.internal.retrofit.TogglApi
 import org.ktoggl.internal.retrofit.dto.TimeEntryRequest
 
-internal class TogglTimeEntityClientImpl(private val p: TimeUtilProvider, private val togglApi: TogglApi) : TogglTimeEntryClient {
+internal class TogglTimeEntryClientImpl(private val p: TimeUtilProvider, private val togglApi: TogglApi) : TogglTimeEntryClient {
 
     companion object {
         private const val TAG = "TogglTimeEntityClient"
+    }
+
+    override fun createTimeEntry(timeEntry: TimeEntry): TimeEntry {
+
+        if (timeEntry.id != null)
+            throw IllegalArgumentException("Cannot create time entry with defined id")
+
+        if (timeEntry.startTimestamp == null)
+            throw IllegalArgumentException("Cannot create time entry without startTimestamp")
+
+        if (timeEntry.workspaceId == null && timeEntry.projectId == null && timeEntry.taskId == null)
+            throw IllegalArgumentException("At least one of the following must be defined: workspaceId, projectId, taskId")
+
+        val duration = timeEntry.durationSeconds ?: ((timeEntry.endTimestamp ?: 0) - (timeEntry.startTimestamp!!))
+
+        val internalTimeEntry = timeEntry.toInternal(p).copy(id = null, created_with = TAG, stop = null, duration = duration)
+        val timeEntryRequest = TimeEntryRequest(internalTimeEntry)
+        val timeEntryResponse = togglApi.createTimeEntry(timeEntryRequest).execute().body()!!
+
+        return timeEntryResponse.timeEntry.toExternal(p)
     }
 
     override fun getTimeEntry(timeEntryId: Long): TimeEntry {
@@ -18,23 +38,6 @@ internal class TogglTimeEntityClientImpl(private val p: TimeUtilProvider, privat
 
     override fun getRunningTimeEntry(): TimeEntry? {
         return null
-    }
-
-    override fun createTimeEntry(timeEntry: TimeEntry): TimeEntry? {
-
-        if (timeEntry.startTimestamp == null)
-            throw IllegalArgumentException("startTimestamp must be defined")
-
-        if (timeEntry.workspaceId == null && timeEntry.projectId == null && timeEntry.taskId == null)
-            throw IllegalArgumentException("At least one of the following must be defined: workspaceId, projectId, taskId")
-
-        val duration = timeEntry.durationSeconds ?: ((timeEntry.endTimestamp ?: 0) - (timeEntry.startTimestamp ?: 0))
-
-        val internalTimeEntry = timeEntry.toInternal(p).copy(id = null, created_with = TAG, stop = null, duration = duration)
-        val timeEntryRequest = TimeEntryRequest(internalTimeEntry)
-        val timeEntryResponse = togglApi.createTimeEntry(timeEntryRequest).execute().body()
-
-        return timeEntryResponse?.timeEntry?.toExternal(p)
     }
 
     override fun startTimeEntry(timeEntry: TimeEntry): TimeEntry {

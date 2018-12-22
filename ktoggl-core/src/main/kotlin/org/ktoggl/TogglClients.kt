@@ -31,9 +31,9 @@ interface TogglWorkspaceClient {
 
 interface TogglTimeEntryClient {
 
+    fun createTimeEntry(timeEntry: TimeEntry): TimeEntry
     fun getTimeEntry(timeEntryId: Long): TimeEntry
     fun getRunningTimeEntry(): TimeEntry?
-    fun createTimeEntry(timeEntry: TimeEntry): TimeEntry?
     fun startTimeEntry(timeEntry: TimeEntry): TimeEntry
     fun stopTimeEntry(timeEntry: TimeEntry): TimeEntry
     fun updateTimeEntry(timeEntry: TimeEntry): TimeEntry
@@ -47,7 +47,7 @@ interface TogglTimeEntryClient {
 
 interface TogglTagClient {
 
-    fun createTag(workspaceId: Long, name: String): Tag?
+    fun createTag(workspaceId: Long, name: String): Tag
     fun updateTag(tagId: Long, newName: String): Tag
     fun deleteTag(tagId: Long): Boolean
 }

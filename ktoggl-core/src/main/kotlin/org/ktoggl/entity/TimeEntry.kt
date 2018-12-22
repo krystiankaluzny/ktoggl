@@ -10,6 +10,6 @@ data class TimeEntry(
     var startTimestamp: Long? = null,
     var endTimestamp: Long? = null,
     var durationSeconds: Long? = null,
-    var tags: List<String>? = null,
+    var tags: List<String> = emptyList(),
     var lastUpdateTimestamp: Long? = null
 )

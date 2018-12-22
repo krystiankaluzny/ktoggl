@@ -127,7 +127,7 @@ internal fun org.ktoggl.internal.retrofit.dto.TimeEntry.toExternal(p: TimeUtilPr
         startTimestamp = p.toEpochSecond(start),
         endTimestamp = p.toEpochSecond(stop),
         durationSeconds = duration,
-        tags = tags,
+        tags = tags ?: emptyList(),
         lastUpdateTimestamp = p.toEpochSecond(at)
     )
 

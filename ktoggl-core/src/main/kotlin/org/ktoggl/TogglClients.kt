@@ -31,7 +31,7 @@ interface TogglWorkspaceClient {
 
 interface TogglTimeEntryClient {
 
-    fun createTimeEntry(timeEntry: TimeEntry): TimeEntry
+    fun createTimeEntry(timeEntryData: CreateTimeEntryData): TimeEntry
     fun getTimeEntry(timeEntryId: Long): TimeEntry
     fun getRunningTimeEntry(): TimeEntry?
     fun startTimeEntry(timeEntry: TimeEntry): TimeEntry

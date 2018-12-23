@@ -127,7 +127,7 @@ internal fun org.ktoggl.internal.retrofit.dto.TimeEntry.toExternal(p: TimeUtilPr
         endTimestamp = p.toEpochSecond(stop),
         durationSeconds = duration,
         tags = tags ?: emptyList(),
-        lastUpdateTimestamp = p.toEpochSecond(at)
+        lastUpdateTimestamp = p.toEpochSecond(at)!!
     )
 
 internal fun TimeEntry.toInternal(p: TimeUtilProvider) =
@@ -143,7 +143,23 @@ internal fun TimeEntry.toInternal(p: TimeUtilProvider) =
         duration = durationSeconds,
         created_with = "",
         tags = tags,
-        at = p.secondsToOffsetDateTimeStr(lastUpdateTimestamp)
+        at = null
+    )
+
+internal fun CreateTimeEntryData.toInternal(p: TimeUtilProvider, createWith: String) =
+    org.ktoggl.internal.retrofit.dto.TimeEntry(
+        id = null,
+        description = description,
+        wid = if (parent is CreateTimeEntryData.WorkspaceParent) parent.id else null,
+        pid = if (parent is CreateTimeEntryData.ProjectParent) parent.id else null,
+        tid = if (parent is CreateTimeEntryData.TaskParent) parent.id else null,
+        billable = billable,
+        start = p.secondsToOffsetDateTimeStr(startTimestamp),
+        stop = p.secondsToOffsetDateTimeStr(endTimestamp),
+        duration = (endTimestamp ?: 0) - startTimestamp,
+        created_with = createWith,
+        tags = tags,
+        at = null
     )
 
 internal fun org.ktoggl.internal.retrofit.dto.Tag.toExternal() =

@@ -2,6 +2,7 @@ package org.ktoggl.internal
 
 import org.ktoggl.TimeUtilProvider
 import org.ktoggl.TogglTimeEntryClient
+import org.ktoggl.entity.CreateTimeEntryData
 import org.ktoggl.entity.TimeEntry
 import org.ktoggl.internal.retrofit.TogglApi
 import org.ktoggl.internal.retrofit.dto.TimeEntryRequest
@@ -12,20 +13,9 @@ internal class TogglTimeEntryClientImpl(private val p: TimeUtilProvider, private
         private const val TAG = "TogglTimeEntityClient"
     }
 
-    override fun createTimeEntry(timeEntry: TimeEntry): TimeEntry {
+    override fun createTimeEntry(timeEntryData: CreateTimeEntryData): TimeEntry {
 
-        if (timeEntry.id != null)
-            throw IllegalArgumentException("Cannot create time entry with defined id")
-
-        if (timeEntry.startTimestamp == null)
-            throw IllegalArgumentException("Cannot create time entry without startTimestamp")
-
-        if (timeEntry.workspaceId == null && timeEntry.projectId == null && timeEntry.taskId == null)
-            throw IllegalArgumentException("At least one of the following must be defined: workspaceId, projectId, taskId")
-
-        val duration = timeEntry.durationSeconds ?: ((timeEntry.endTimestamp ?: 0) - (timeEntry.startTimestamp!!))
-
-        val internalTimeEntry = timeEntry.toInternal(p).copy(id = null, created_with = TAG, stop = null, duration = duration)
+        val internalTimeEntry = timeEntryData.toInternal(p, TAG)
         val timeEntryRequest = TimeEntryRequest(internalTimeEntry)
         val timeEntryResponse = togglApi.createTimeEntry(timeEntryRequest).execute().body()!!
 

@@ -1,12 +1,14 @@
 package org.ktoggl
 
+import io.kotlintest.matchers.numerics.shouldBeGreaterThan
 import io.kotlintest.shouldBe
 import io.kotlintest.shouldNotBe
-import io.kotlintest.shouldThrow
 import io.kotlintest.specs.StringSpec
 import org.ktoggl.android.JvmTogglClientBuilder
 import org.ktoggl.entity.CreateTimeEntryData
-import org.ktoggl.entity.TimeEntry
+import org.ktoggl.entity.ProjectParent
+import org.ktoggl.entity.StartTimeEntryData
+import java.time.Clock
 
 class TogglTimeEntryClientSpec : StringSpec({
 
@@ -16,7 +18,7 @@ class TogglTimeEntryClientSpec : StringSpec({
 
         val createTimeEntryData = CreateTimeEntryData(
             startTimestamp = 1483274096, endTimestamp = 1483275096,
-            parent = CreateTimeEntryData.ProjectParent(140214510))
+            parent = ProjectParent(140214510))
 
         val timeEntry = togglTimeEntryClient.createTimeEntry(createTimeEntryData)
         timeEntry.apply {
@@ -37,7 +39,7 @@ class TogglTimeEntryClientSpec : StringSpec({
 
         val createTimeEntryData = CreateTimeEntryData(
             startTimestamp = 1483274096, endTimestamp = 1483275096,
-            parent = CreateTimeEntryData.ProjectParent(140214541),
+            parent = ProjectParent(140214541),
             description = "Time entry with tag",
             tags = listOf("abc"))
 
@@ -53,6 +55,26 @@ class TogglTimeEntryClientSpec : StringSpec({
             endTimestamp shouldBe 1483275096
             durationSeconds shouldBe 1000
             tags shouldBe listOf("abc")
+        }
+    }
+
+    "startTimeEntry should create time entry" {
+
+        val currentTimeSec = System.currentTimeMillis() / 1000L
+        val createTimeEntryData = StartTimeEntryData(parent = ProjectParent(140214570), tags = listOf("test"))
+
+        val timeEntry = togglTimeEntryClient.startTimeEntry(createTimeEntryData)
+        timeEntry.apply {
+            id shouldNotBe null
+            workspaceId shouldBe 2963000
+            projectId shouldBe 140214570
+            taskId shouldBe null
+            description shouldBe null
+            billable shouldBe false
+            startTimestamp shouldBeGreaterThan currentTimeSec
+            endTimestamp shouldBe null
+            durationSeconds shouldBe -startTimestamp
+            tags shouldBe listOf("test")
         }
     }
 })

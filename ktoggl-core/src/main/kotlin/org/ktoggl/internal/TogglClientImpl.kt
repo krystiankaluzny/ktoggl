@@ -28,10 +28,10 @@ internal class TogglClientImpl(p: TimeUtilProvider, togglApi: TogglApi, togglRep
     override fun getWorkspaceTags(workspaceId: Long) = togglWorkspaceClient.getWorkspaceTags(workspaceId)
 
     override fun createTimeEntry(timeEntryData: CreateTimeEntryData) = togglTimeEntityClient.createTimeEntry(timeEntryData)
+    override fun startTimeEntry(timeEntryData: StartTimeEntryData) = togglTimeEntityClient.startTimeEntry(timeEntryData)
+    override fun stopTimeEntry(timeEntry: TimeEntry) = togglTimeEntityClient.stopTimeEntry(timeEntry)
     override fun getTimeEntry(timeEntryId: Long) = togglTimeEntityClient.getTimeEntry(timeEntryId)
     override fun getRunningTimeEntry() = togglTimeEntityClient.getRunningTimeEntry()
-    override fun startTimeEntry(timeEntry: TimeEntry) = togglTimeEntityClient.startTimeEntry(timeEntry)
-    override fun stopTimeEntry(timeEntry: TimeEntry) = togglTimeEntityClient.stopTimeEntry(timeEntry)
     override fun updateTimeEntry(timeEntry: TimeEntry) = togglTimeEntityClient.updateTimeEntry(timeEntry)
     override fun deleteTimeEntry(timeEntryId: Long) = togglTimeEntityClient.deleteTimeEntry(timeEntryId)
     override fun updateTimeEntriesTags(timeEntryIds: List<Long>, tags: List<String>, updateTagsAction: org.ktoggl.TogglTimeEntryClient.UpdateTagsAction) = togglTimeEntityClient.updateTimeEntriesTags(timeEntryIds, tags, updateTagsAction)

@@ -1,6 +1,10 @@
 package org.ktoggl
 
-import io.kotlintest.matchers.numerics.shouldBeGreaterThan
+import io.kotlintest.be
+import io.kotlintest.matchers.date.after
+import io.kotlintest.matchers.date.shouldBeAfter
+import io.kotlintest.matchers.numerics.shouldBeGreaterThanOrEqual
+import io.kotlintest.should
 import io.kotlintest.shouldBe
 import io.kotlintest.shouldNotBe
 import io.kotlintest.specs.StringSpec
@@ -8,7 +12,9 @@ import org.ktoggl.android.JvmTogglClientBuilder
 import org.ktoggl.entity.CreateTimeEntryData
 import org.ktoggl.entity.ProjectParent
 import org.ktoggl.entity.StartTimeEntryData
-import java.time.Clock
+import org.ktoggl.jvm.entity.endTime
+import org.ktoggl.jvm.entity.startTime
+import java.time.OffsetDateTime
 
 class TogglTimeEntryClientSpec : StringSpec({
 
@@ -30,6 +36,8 @@ class TogglTimeEntryClientSpec : StringSpec({
             billable shouldBe false
             startTimestamp shouldBe 1483274096
             endTimestamp shouldBe 1483275096
+            startTime shouldBe OffsetDateTime.parse("2017-01-01T12:34:56Z")
+            endTime shouldBe OffsetDateTime.parse("2017-01-01T12:51:36Z")
             durationSeconds shouldBe 1000
             tags shouldBe emptyList()
         }
@@ -53,6 +61,8 @@ class TogglTimeEntryClientSpec : StringSpec({
             billable shouldBe false
             startTimestamp shouldBe 1483274096
             endTimestamp shouldBe 1483275096
+            startTime shouldBe OffsetDateTime.parse("2017-01-01T12:34:56Z")
+            endTime shouldBe OffsetDateTime.parse("2017-01-01T12:51:36Z")
             durationSeconds shouldBe 1000
             tags shouldBe listOf("abc")
         }
@@ -60,7 +70,8 @@ class TogglTimeEntryClientSpec : StringSpec({
 
     "startTimeEntry should create time entry" {
 
-        val currentTimeSec = System.currentTimeMillis() / 1000L
+        val currentTime = OffsetDateTime.now().minusSeconds(1)
+        val currentTimeSec = currentTime.toInstant().epochSecond
         val createTimeEntryData = StartTimeEntryData(parent = ProjectParent(140214570), tags = listOf("test"))
 
         val timeEntry = togglTimeEntryClient.startTimeEntry(createTimeEntryData)
@@ -71,9 +82,11 @@ class TogglTimeEntryClientSpec : StringSpec({
             taskId shouldBe null
             description shouldBe null
             billable shouldBe false
-            startTimestamp shouldBeGreaterThan currentTimeSec
+            startTimestamp shouldBeGreaterThanOrEqual currentTimeSec
             endTimestamp shouldBe null
             durationSeconds shouldBe -startTimestamp
+            startTime should (be(currentTime) or after(currentTime))
+            endTime shouldBe null
             tags shouldBe listOf("test")
         }
     }

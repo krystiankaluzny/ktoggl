@@ -32,8 +32,8 @@ internal class TogglTimeEntryClientImpl(private val p: TimeUtilProvider, private
         return timeEntryResponse.timeEntry.toExternal(p)
     }
 
-    override fun stopTimeEntry(timeEntry: TimeEntry): TimeEntry {
-        return timeEntry
+    override fun stopTimeEntry(timeEntryId: Long): TimeEntry {
+        return togglApi.stopTimeEntry(timeEntryId).execute().body()!!.timeEntry.toExternal(p)
     }
 
     override fun getTimeEntry(timeEntryId: Long): TimeEntry {

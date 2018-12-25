@@ -36,6 +36,9 @@ internal interface TogglApi {
     @POST("time_entries/start")
     fun startTimeEntry(@Body timeEntryRequest: TimeEntryRequest): Call<TimeEntryResponse>
 
+    @PUT("time_entries/{timeEntryId}/stop")
+    fun stopTimeEntry(@Path("timeEntryId") timeEntryId: Long): Call<TimeEntryResponse>
+
     @POST("tags")
     fun createTag(@Body tagRequest: TagRequest): Call<TagResponse>
 

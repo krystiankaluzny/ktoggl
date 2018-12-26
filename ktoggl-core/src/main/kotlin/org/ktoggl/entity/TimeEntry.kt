@@ -1,33 +1,33 @@
 package org.ktoggl.entity
 
 data class TimeEntry(
-    var id: Long,
-    var workspaceId: Long? = null,
-    var projectId: Long? = null,
-    var taskId: Long? = null,
-    var description: String? = null,
-    var billable: Boolean? = null,
-    var startTimestamp: Long,
-    var endTimestamp: Long? = null,
-    var durationSeconds: Long,
-    var tags: List<String> = emptyList(),
-    var lastUpdateTimestamp: Long = 0
+    val id: Long,
+    val workspaceId: Long? = null,
+    val projectId: Long? = null,
+    val taskId: Long? = null,
+    val description: String? = null,
+    val billable: Boolean? = null,
+    val startTimestamp: Long,
+    val endTimestamp: Long? = null,
+    val durationSeconds: Long,
+    val tags: List<String> = emptyList(),
+    val lastUpdateTimestamp: Long = 0
 )
 
 data class CreateTimeEntryData(
-    var startTimestamp: Long,
-    var endTimestamp: Long? = null,
-    var parent: TimeEntryParent,
-    var description: String? = null,
-    var billable: Boolean? = null,
-    var tags: List<String> = emptyList()
+    val startTimestamp: Long,
+    val endTimestamp: Long? = null,
+    val parent: TimeEntryParent,
+    val description: String? = null,
+    val billable: Boolean? = null,
+    val tags: List<String> = emptyList()
 )
 
 data class StartTimeEntryData(
-    var parent: TimeEntryParent,
-    var description: String? = null,
-    var billable: Boolean? = null,
-    var tags: List<String> = emptyList()
+    val parent: TimeEntryParent,
+    val description: String? = null,
+    val billable: Boolean? = null,
+    val tags: List<String> = emptyList()
 )
 
 open class TimeEntryParent(var id: Long)

@@ -13,13 +13,11 @@ internal class TogglUserClientImpl(private val p: TimeUtilProvider, private val 
 
     override fun updateCurrentUser(userData: UserData): User {
         val execute = togglApi.updateMe(UserUpdateRequest(userData.toInternal())).execute()
-
         return execute.body()!!.user.toExternal(p)
     }
 
     override fun updateCurrentUserPassword(userPassword: UserPassword): User {
         val execute = togglApi.updateMe(UserUpdateRequest(userPassword.toInternal())).execute()
-
         return execute.body()!!.user.toExternal(p)
     }
 }

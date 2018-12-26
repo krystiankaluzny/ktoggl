@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 
 internal data class TimeEntryResponse(
-    @JsonProperty("data") val timeEntry: TimeEntry
+    @JsonProperty("data") val timeEntry: TimeEntry?
 )
 
 internal data class TimeEntryRequest(

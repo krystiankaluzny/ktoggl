@@ -77,7 +77,7 @@ If you think that something should be added faster, feel free to create an issue
     1. Create a time entry - YES
     2. Start a time entry - YES
     3. Stop a time entry - YES
-    4. Get time entry details - NO
+    4. Get time entry details - YES
     5. Get running time entry - NO
     6. Update a time entry - NO
     7. Delete a time entry - NO

@@ -72,12 +72,12 @@ class TogglTimeEntryClientSpec : StringSpec({
     "startTimeEntry should create time entry" {
 
         val currentTime = OffsetDateTime.now().minusSeconds(1)
-        val createTimeEntryData = StartTimeEntryData(
+        val startTimeEntryData = StartTimeEntryData(
             parent = ProjectParent(140214570),
             tags = listOf("test"),
             description = "startTimeEntry should create time entry")
 
-        val timeEntry = togglTimeEntryClient.startTimeEntry(createTimeEntryData)
+        val timeEntry = togglTimeEntryClient.startTimeEntry(startTimeEntryData)
         timeEntry.apply {
             id shouldNotBe null
             workspaceId shouldBe 2963000
@@ -92,13 +92,15 @@ class TogglTimeEntryClientSpec : StringSpec({
             endTime shouldBe null
             tags shouldBe listOf("test")
         }
+
+        togglTimeEntryClient.stopTimeEntry(timeEntry.id)
     }
 
     "createTimeEntry without endTime then stopTimeEntry should set endTime" {
 
         val createTimeEntryData = CreateTimeEntryData(
             startTimestamp = 1545568770,
-            parent = ProjectParent(140214570),
+            parent = ProjectParent(140214602),
             description = "createTimeEntry without endTime then stopTimeEntry should set endTime")
         val createdTimeEntry = togglTimeEntryClient.createTimeEntry(createTimeEntryData)
 
@@ -109,7 +111,7 @@ class TogglTimeEntryClientSpec : StringSpec({
         timeEntry.apply {
             id shouldBe createdTimeEntry.id
             workspaceId shouldBe 2963000
-            projectId shouldBe 140214570
+            projectId shouldBe 140214602
             startTimestamp shouldBe 1545568770
             endTimestamp!! shouldBeInRange(LongRange(timeBeforeStop.toEpochSecond(), timeAfterStop.toEpochSecond() + 1))
             startTime shouldBe OffsetDateTime.parse("2018-12-23T12:39:30Z")
@@ -120,7 +122,7 @@ class TogglTimeEntryClientSpec : StringSpec({
     "startTimeEntry and stopTimeEntry sequence should be executable" {
 
         val startTimeEntryData = StartTimeEntryData(
-            parent = ProjectParent(140214570),
+            parent = ProjectParent(140214627),
             description = "startTimeEntry and stopTimeEntry sequence should be executable")
         val startedTimeEntry = togglTimeEntryClient.startTimeEntry(startTimeEntryData)
 
@@ -131,9 +133,49 @@ class TogglTimeEntryClientSpec : StringSpec({
         timeEntry.apply {
             id shouldBe startedTimeEntry.id
             workspaceId shouldBe 2963000
-            projectId shouldBe 140214570
+            projectId shouldBe 140214627
             endTimestamp!! shouldBeInRange(LongRange(timeBeforeStop.toEpochSecond(), timeAfterStop.toEpochSecond() + 1))
             endTime!! shouldBe (after(timeBeforeStop) and before(timeAfterStop))
         }
+    }
+
+    "getTimeEntry should return valid object" {
+
+        val timeEntry = togglTimeEntryClient.getTimeEntry(1060627344L)
+        timeEntry!!.apply {
+            id shouldBe 1060627344L
+            workspaceId shouldBe 2963000
+            projectId shouldBe 140214510
+            taskId shouldBe null
+            description shouldBe "test time entry"
+            billable shouldBe false
+            startTimestamp shouldBe 1483274096
+            endTimestamp shouldBe 1483275096
+            startTime shouldBe OffsetDateTime.parse("2017-01-01T12:34:56Z")
+            endTime shouldBe OffsetDateTime.parse("2017-01-01T12:51:36Z")
+            durationSeconds shouldBe 1000
+            tags shouldBe listOf("abc", "test")
+        }
+    }
+
+    "getCurrentTimeEntry should return previously started time entry" {
+
+        val startTimeEntryData = StartTimeEntryData(
+            parent = ProjectParent(140214541),
+            description = "getCurrentTimeEntry should return previously started time entry")
+        val startedTimeEntry = togglTimeEntryClient.startTimeEntry(startTimeEntryData)
+
+        val timeEntry = togglTimeEntryClient.getCurrentTimeEntry()
+
+        timeEntry!! shouldBe startedTimeEntry
+
+        togglTimeEntryClient.stopTimeEntry(startedTimeEntry.id)
+    }
+
+    "getCurrentTimeEntry should return null if there is no running time entry" {
+
+        val timeEntry = togglTimeEntryClient.getCurrentTimeEntry()
+
+        timeEntry shouldBe null
     }
 })

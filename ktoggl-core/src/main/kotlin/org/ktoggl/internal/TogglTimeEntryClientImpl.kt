@@ -20,7 +20,7 @@ internal class TogglTimeEntryClientImpl(private val p: TimeUtilProvider, private
         val timeEntryRequest = TimeEntryRequest(internalTimeEntry)
         val timeEntryResponse = togglApi.createTimeEntry(timeEntryRequest).execute().body()!!
 
-        return timeEntryResponse.timeEntry.toExternal(p)
+        return timeEntryResponse.timeEntry!!.toExternal(p)
     }
 
     override fun startTimeEntry(timeEntryData: StartTimeEntryData): TimeEntry {
@@ -29,19 +29,19 @@ internal class TogglTimeEntryClientImpl(private val p: TimeUtilProvider, private
         val timeEntryRequest = TimeEntryRequest(internalTimeEntry)
         val timeEntryResponse = togglApi.startTimeEntry(timeEntryRequest).execute().body()!!
 
-        return timeEntryResponse.timeEntry.toExternal(p)
+        return timeEntryResponse.timeEntry!!.toExternal(p)
     }
 
     override fun stopTimeEntry(timeEntryId: Long): TimeEntry {
-        return togglApi.stopTimeEntry(timeEntryId).execute().body()!!.timeEntry.toExternal(p)
+        return togglApi.stopTimeEntry(timeEntryId).execute().body()!!.timeEntry!!.toExternal(p)
     }
 
-    override fun getTimeEntry(timeEntryId: Long): TimeEntry {
-        return TimeEntry(startTimestamp = 12L, id = 0, durationSeconds = 0)
+    override fun getTimeEntry(timeEntryId: Long): TimeEntry? {
+        return togglApi.getTimeEntry(timeEntryId).execute().body()?.timeEntry?.toExternal(p)
     }
 
-    override fun getRunningTimeEntry(): TimeEntry? {
-        return null
+    override fun getCurrentTimeEntry(): TimeEntry? {
+        return togglApi.getCurrentTimeEntry().execute().body()?.timeEntry?.toExternal(p)
     }
 
     override fun updateTimeEntry(timeEntry: TimeEntry): TimeEntry {

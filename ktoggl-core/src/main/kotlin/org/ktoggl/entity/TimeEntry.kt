@@ -15,11 +15,11 @@ data class TimeEntry(
 )
 
 data class CreateTimeEntryData(
-    val startTimestamp: Long,
-    val endTimestamp: Long? = null,
     val parent: TimeEntryParent,
     val description: String? = null,
     val billable: Boolean? = null,
+    val startTimestamp: Long,
+    val endTimestamp: Long? = null,
     val tags: List<String> = emptyList()
 )
 
@@ -28,6 +28,15 @@ data class StartTimeEntryData(
     val description: String? = null,
     val billable: Boolean? = null,
     val tags: List<String> = emptyList()
+)
+
+data class UpdateTimeEntryData(
+    val parent: TimeEntryParent? = null,
+    val description: String? = null,
+    val billable: Boolean? = null,
+    val startTimestamp: Long? = null,
+    val endTimestamp: Long? = null,
+    val tags: List<String>? = null
 )
 
 open class TimeEntryParent(var id: Long)

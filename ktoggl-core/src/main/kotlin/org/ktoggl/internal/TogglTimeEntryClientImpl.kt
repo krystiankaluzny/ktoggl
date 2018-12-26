@@ -5,6 +5,7 @@ import org.ktoggl.TogglTimeEntryClient
 import org.ktoggl.entity.CreateTimeEntryData
 import org.ktoggl.entity.StartTimeEntryData
 import org.ktoggl.entity.TimeEntry
+import org.ktoggl.entity.UpdateTimeEntryData
 import org.ktoggl.internal.retrofit.TogglApi
 import org.ktoggl.internal.retrofit.dto.TimeEntryRequest
 
@@ -44,8 +45,13 @@ internal class TogglTimeEntryClientImpl(private val p: TimeUtilProvider, private
         return togglApi.getCurrentTimeEntry().execute().body()?.timeEntry?.toExternal(p)
     }
 
-    override fun updateTimeEntry(timeEntry: TimeEntry): TimeEntry {
-        return timeEntry
+    override fun updateTimeEntry(timeEntryId: Long, timeEntryData: UpdateTimeEntryData): TimeEntry {
+
+        val internalTimeEntry = timeEntryData.toInternal(p)
+        val timeEntryRequest = TimeEntryRequest(internalTimeEntry)
+        val timeEntryResponse = togglApi.updateTimeEntry(timeEntryId, timeEntryRequest).execute().body()!!
+
+        return timeEntryResponse.timeEntry!!.toExternal(p)
     }
 
     override fun deleteTimeEntry(timeEntryId: Long): Boolean {

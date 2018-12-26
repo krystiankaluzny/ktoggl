@@ -178,6 +178,22 @@ internal fun StartTimeEntryData.toInternal(createdWith: String) =
         at = null
     )
 
+internal fun UpdateTimeEntryData.toInternal(p: TimeUtilProvider) =
+    org.ktoggl.internal.retrofit.dto.TimeEntry(
+        id = null,
+        description = description,
+        wid = if (parent is WorkspaceParent) parent.id else null,
+        pid = if (parent is ProjectParent) parent.id else null,
+        tid = if (parent is TaskParent) parent.id else null,
+        billable = billable,
+        start = p.secondsToOffsetDateTimeStr(startTimestamp),
+        stop = p.secondsToOffsetDateTimeStr(endTimestamp),
+        duration = if (endTimestamp != null && startTimestamp != null) endTimestamp - startTimestamp else null,
+        created_with = null,
+        tags = tags,
+        at = null
+    )
+
 internal fun org.ktoggl.internal.retrofit.dto.Tag.toExternal() =
     Tag(
         id = id!!,

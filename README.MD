@@ -78,8 +78,8 @@ If you think that something should be added faster, feel free to create an issue
     2. Start a time entry - YES
     3. Stop a time entry - YES
     4. Get time entry details - YES
-    5. Get running time entry - NO
-    6. Update a time entry - NO
+    5. Get running time entry - YES
+    6. Update a time entry - YES
     7. Delete a time entry - NO
     8. Get time entries started in a specific time range - NO
     9. Bulk update time entries tags - NO

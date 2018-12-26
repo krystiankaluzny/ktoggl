@@ -13,6 +13,7 @@ import org.ktoggl.android.JvmTogglClientBuilder
 import org.ktoggl.entity.CreateTimeEntryData
 import org.ktoggl.entity.ProjectParent
 import org.ktoggl.entity.StartTimeEntryData
+import org.ktoggl.entity.UpdateTimeEntryData
 import org.ktoggl.jvm.entity.endTime
 import org.ktoggl.jvm.entity.startTime
 import java.time.OffsetDateTime
@@ -177,5 +178,39 @@ class TogglTimeEntryClientSpec : StringSpec({
         val timeEntry = togglTimeEntryClient.getCurrentTimeEntry()
 
         timeEntry shouldBe null
+    }
+
+    "f:updateTimeEntry should change all properties" {
+
+        val createTimeEntryData = CreateTimeEntryData(
+            parent = ProjectParent(140214602),
+            description = "some description",
+            startTimestamp = 1545568770,
+            endTimestamp = 1545569770,
+            tags = listOf("test"))
+        val createdTimeEntry = togglTimeEntryClient.createTimeEntry(createTimeEntryData)
+
+        val updateTimeEntryData = UpdateTimeEntryData(
+            parent = ProjectParent(140214627),
+            description = "updateTimeEntry should change all properties",
+            startTimestamp = 1545557770,
+            endTimestamp = 1545559770,
+            tags = listOf("abc"))
+
+        val timeEntry = togglTimeEntryClient.updateTimeEntry(createdTimeEntry.id, updateTimeEntryData)
+
+        timeEntry.apply {
+            id shouldBe createdTimeEntry.id
+            workspaceId shouldBe 2963000
+            projectId shouldBe 140214627
+            taskId shouldBe null
+            description shouldBe "updateTimeEntry should change all properties"
+            startTimestamp shouldBe 1545557770
+            endTimestamp!! shouldBe 1545559770
+            durationSeconds shouldBe 2000
+            startTime shouldBe OffsetDateTime.parse("2018-12-23T09:36:10Z")
+            endTime!! shouldBe OffsetDateTime.parse("2018-12-23T10:09:30Z")
+            tags shouldBe listOf("abc")
+        }
     }
 })

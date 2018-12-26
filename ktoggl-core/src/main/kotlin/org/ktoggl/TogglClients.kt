@@ -36,7 +36,7 @@ interface TogglTimeEntryClient {
     fun stopTimeEntry(timeEntryId: Long): TimeEntry
     fun getTimeEntry(timeEntryId: Long): TimeEntry?
     fun getCurrentTimeEntry(): TimeEntry?
-    fun updateTimeEntry(timeEntry: TimeEntry): TimeEntry
+    fun updateTimeEntry(timeEntryId: Long, timeEntryData: UpdateTimeEntryData): TimeEntry
     fun deleteTimeEntry(timeEntryId: Long): Boolean
     fun updateTimeEntriesTags(timeEntryIds: List<Long>, tags: List<String>, updateTagsAction: org.ktoggl.TogglTimeEntryClient.UpdateTagsAction)
 

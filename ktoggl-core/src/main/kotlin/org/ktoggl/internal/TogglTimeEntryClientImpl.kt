@@ -2,11 +2,14 @@ package org.ktoggl.internal
 
 import org.ktoggl.TimeUtilProvider
 import org.ktoggl.TogglTimeEntryClient
+import org.ktoggl.TogglTimeEntryClient.UpdateTagsAction.*
 import org.ktoggl.entity.CreateTimeEntryData
 import org.ktoggl.entity.StartTimeEntryData
 import org.ktoggl.entity.TimeEntry
 import org.ktoggl.entity.UpdateTimeEntryData
 import org.ktoggl.internal.retrofit.TogglApi
+import org.ktoggl.internal.retrofit.dto.TagsTimeEntry
+import org.ktoggl.internal.retrofit.dto.TagsTimeEntryRequest
 import org.ktoggl.internal.retrofit.dto.TimeEntryRequest
 
 internal class TogglTimeEntryClientImpl(private val p: TimeUtilProvider, private val togglApi: TogglApi) : TogglTimeEntryClient {
@@ -65,6 +68,17 @@ internal class TogglTimeEntryClientImpl(private val p: TimeUtilProvider, private
         return timeEntries.map { it.toExternal(p) }
     }
 
-    override fun updateTimeEntriesTags(timeEntryIds: List<Long>, tags: List<String>, updateTagsAction: org.ktoggl.TogglTimeEntryClient.UpdateTagsAction) {
+    override fun updateTimeEntriesTags(timeEntryIds: List<Long>, tags: List<String>, updateTagsAction: org.ktoggl.TogglTimeEntryClient.UpdateTagsAction): List<TimeEntry> {
+
+        val timeEntriesIdsString = timeEntryIds.joinToString(separator = ",")
+        val tagAction = when(updateTagsAction) {
+            ADD -> "add"
+            REMOVE -> "remove"
+            OVERRIDE -> null
+        }
+        val tagsTimeEntryRequest = TagsTimeEntryRequest(TagsTimeEntry(tags, tagAction))
+        val timeEntries = togglApi.updateTimeEntriesTags(timeEntriesIdsString, tagsTimeEntryRequest).execute().body()!!.timeEntries
+
+        return timeEntries.map { it.toExternal(p) }
     }
 }

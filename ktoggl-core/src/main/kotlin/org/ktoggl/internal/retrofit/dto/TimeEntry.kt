@@ -11,6 +11,14 @@ internal data class TimeEntryRequest(
     @JsonProperty("time_entry") val timeEntry: TimeEntry
 )
 
+internal data class TagsTimeEntryResponse(
+    @JsonProperty("data") val timeEntries: List<TimeEntry>
+)
+
+internal data class TagsTimeEntryRequest(
+    @JsonProperty("time_entry") val tagsTimeEntry: TagsTimeEntry
+)
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 internal data class TimeEntry(
     val id: Long?,
@@ -25,4 +33,10 @@ internal data class TimeEntry(
     val created_with: String?,
     val tags: List<String>?,
     val at: String?
+)
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+internal data class TagsTimeEntry(
+    val tags: List<String>,
+    val tag_action: String?
 )

@@ -54,6 +54,9 @@ internal interface TogglApi {
     @GET("time_entries")
     fun getTimeEntriesStartedInRange(@Query("start_date") startDate: String, @Query("end_date") endDate: String): Call<List<TimeEntry>>
 
+    @PUT("time_entries/{timeEntryIds}")
+    fun updateTimeEntriesTags(@Path("timeEntryIds") timeEntryIds: String, @Body tagsTimeEntryRequest: TagsTimeEntryRequest): Call<TagsTimeEntryResponse>
+
     @POST("tags")
     fun createTag(@Body tagRequest: TagRequest): Call<TagResponse>
 

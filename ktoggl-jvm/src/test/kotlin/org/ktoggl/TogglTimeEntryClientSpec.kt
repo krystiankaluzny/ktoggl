@@ -1,6 +1,8 @@
 package org.ktoggl
 
 import io.kotlintest.be
+import io.kotlintest.matchers.collections.shouldContainExactlyInAnyOrder
+import io.kotlintest.matchers.collections.shouldHaveSize
 import io.kotlintest.matchers.collections.shouldNotBeEmpty
 import io.kotlintest.matchers.date.after
 import io.kotlintest.matchers.date.before
@@ -16,8 +18,8 @@ import org.ktoggl.entity.ProjectParent
 import org.ktoggl.entity.StartTimeEntryData
 import org.ktoggl.entity.UpdateTimeEntryData
 import org.ktoggl.jvm.entity.endTime
-import org.ktoggl.jvm.entity.startTime
 import org.ktoggl.jvm.entity.getTimeEntriesStartedInRange
+import org.ktoggl.jvm.entity.startTime
 import java.time.OffsetDateTime
 
 class TogglTimeEntryClientSpec : StringSpec({
@@ -116,7 +118,7 @@ class TogglTimeEntryClientSpec : StringSpec({
             workspaceId shouldBe 2963000
             projectId shouldBe 140214602
             startTimestamp shouldBe 1545568770
-            endTimestamp!! shouldBeInRange(LongRange(timeBeforeStop.toEpochSecond(), timeAfterStop.toEpochSecond()))
+            endTimestamp!! shouldBeInRange (LongRange(timeBeforeStop.toEpochSecond(), timeAfterStop.toEpochSecond()))
             startTime shouldBe OffsetDateTime.parse("2018-12-23T12:39:30Z")
             endTime!! shouldBe (after(timeBeforeStop) and before(timeAfterStop))
         }
@@ -137,7 +139,7 @@ class TogglTimeEntryClientSpec : StringSpec({
             id shouldBe startedTimeEntry.id
             workspaceId shouldBe 2963000
             projectId shouldBe 140214627
-            endTimestamp!! shouldBeInRange(LongRange(timeBeforeStop.toEpochSecond(), timeAfterStop.toEpochSecond()))
+            endTimestamp!! shouldBeInRange (LongRange(timeBeforeStop.toEpochSecond(), timeAfterStop.toEpochSecond()))
             endTime!! shouldBe (after(timeBeforeStop) and before(timeAfterStop))
         }
     }
@@ -245,4 +247,104 @@ class TogglTimeEntryClientSpec : StringSpec({
         timeEntriesFromOffsetDateTime shouldBe timeEntries
     }
 
+    "updateTimeEntriesTags with 'add' action should add suitable tags" {
+
+        val createTimeEntryData1 = CreateTimeEntryData(
+            parent = ProjectParent(140214602),
+            description = "updateTimeEntriesTags with 'add' action should add suitable tags",
+            startTimestamp = 1545538770,
+            endTimestamp = 1545539770,
+            tags = emptyList())
+        val createdTimeEntry1 = togglTimeEntryClient.createTimeEntry(createTimeEntryData1)
+
+        val createTimeEntryData2 = CreateTimeEntryData(
+            parent = ProjectParent(140214602),
+            description = "updateTimeEntriesTags with 'add' action should add suitable tags",
+            startTimestamp = 1545548770,
+            endTimestamp = 1545549770,
+            tags = listOf("abc"))
+        val createdTimeEntry2 = togglTimeEntryClient.createTimeEntry(createTimeEntryData2)
+
+        val updatedTimeEntries = togglTimeEntryClient.updateTimeEntriesTags(
+            listOf(createdTimeEntry1.id, createdTimeEntry2.id),
+            listOf("test"),
+            TogglTimeEntryClient.UpdateTagsAction.ADD)
+
+        updatedTimeEntries shouldHaveSize 2
+
+        updatedTimeEntries.find { it.id == createdTimeEntry1.id }!!
+            .apply {
+                tags shouldContainExactlyInAnyOrder listOf("test")
+            }
+
+        updatedTimeEntries.find { it.id == createdTimeEntry2.id }!!
+            .apply {
+                tags shouldContainExactlyInAnyOrder listOf("abc", "test")
+            }
+    }
+
+    "updateTimeEntriesTags with 'remove' action should add suitable tags" {
+
+        val createTimeEntryData1 = CreateTimeEntryData(
+            parent = ProjectParent(140214602),
+            description = "updateTimeEntriesTags with 'remove' action should add suitable tags",
+            startTimestamp = 1545536770,
+            endTimestamp = 1545537770,
+            tags = listOf("test"))
+        val createdTimeEntry1 = togglTimeEntryClient.createTimeEntry(createTimeEntryData1)
+
+        val createTimeEntryData2 = CreateTimeEntryData(
+            parent = ProjectParent(140214602),
+            description = "updateTimeEntriesTags with 'remove' action should add suitable tags",
+            startTimestamp = 1545546770,
+            endTimestamp = 1545547770,
+            tags = listOf("test", "abc"))
+        val createdTimeEntry2 = togglTimeEntryClient.createTimeEntry(createTimeEntryData2)
+
+        val updatedTimeEntries = togglTimeEntryClient.updateTimeEntriesTags(
+            listOf(createdTimeEntry1.id, createdTimeEntry2.id),
+            listOf("test"),
+            TogglTimeEntryClient.UpdateTagsAction.REMOVE)
+
+        updatedTimeEntries shouldHaveSize 2
+        updatedTimeEntries.find { it.id == createdTimeEntry1.id }!!
+            .apply {
+                tags shouldBe emptyList()
+            }
+        updatedTimeEntries.find { it.id == createdTimeEntry2.id }!!
+            .apply {
+                tags shouldBe listOf("abc")
+            }
+    }
+
+    "f:updateTimeEntriesTags with 'override' action should add suitable tags" {
+
+        val createTimeEntryData1 = CreateTimeEntryData(
+            parent = ProjectParent(140214602),
+            description = "updateTimeEntriesTags with 'override' action should add suitable tags",
+            startTimestamp = 1545516770,
+            endTimestamp = 1545527770,
+            tags = listOf("test"))
+        val createdTimeEntry1 = togglTimeEntryClient.createTimeEntry(createTimeEntryData1)
+
+        val createTimeEntryData2 = CreateTimeEntryData(
+            parent = ProjectParent(140214602),
+            description = "updateTimeEntriesTags with 'override' action should add suitable tags",
+            startTimestamp = 1545526770,
+            endTimestamp = 1545537770,
+            tags = listOf("test", "abc"))
+        val createdTimeEntry2 = togglTimeEntryClient.createTimeEntry(createTimeEntryData2)
+
+        val updatedTimeEntries = togglTimeEntryClient.updateTimeEntriesTags(
+            listOf(createdTimeEntry1.id, createdTimeEntry2.id),
+            listOf("abc"),
+            TogglTimeEntryClient.UpdateTagsAction.OVERRIDE)
+
+        updatedTimeEntries shouldHaveSize 2
+        updatedTimeEntries.forEach {
+            it.apply {
+                tags shouldBe listOf("abc")
+            }
+        }
+    }
 })

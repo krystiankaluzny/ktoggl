@@ -39,7 +39,7 @@ interface TogglTimeEntryClient {
     fun updateTimeEntry(timeEntryId: Long, timeEntryData: UpdateTimeEntryData): TimeEntry
     fun deleteTimeEntry(timeEntryId: Long): Boolean
     fun getTimeEntriesStartedInRange(fromTimestamp: Long, toTimestamp: Long): List<TimeEntry>
-    fun updateTimeEntriesTags(timeEntryIds: List<Long>, tags: List<String>, updateTagsAction: org.ktoggl.TogglTimeEntryClient.UpdateTagsAction)
+    fun updateTimeEntriesTags(timeEntryIds: List<Long>, tags: List<String>, updateTagsAction: org.ktoggl.TogglTimeEntryClient.UpdateTagsAction): List<TimeEntry>
 
     enum class UpdateTagsAction {
         OVERRIDE, ADD, REMOVE

@@ -54,9 +54,7 @@ internal class TogglTimeEntryClientImpl(private val p: TimeUtilProvider, private
         return timeEntryResponse.timeEntry!!.toExternal(p)
     }
 
-    override fun deleteTimeEntry(timeEntryId: Long): Boolean {
-        return false
-    }
+    override fun deleteTimeEntry(timeEntryId: Long): Boolean = togglApi.deleteTimeEntry(timeEntryId).execute().isSuccessful
 
     override fun updateTimeEntriesTags(timeEntryIds: List<Long>, tags: List<String>, updateTagsAction: org.ktoggl.TogglTimeEntryClient.UpdateTagsAction) {
     }

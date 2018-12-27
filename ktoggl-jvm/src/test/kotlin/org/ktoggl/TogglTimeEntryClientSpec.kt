@@ -180,7 +180,7 @@ class TogglTimeEntryClientSpec : StringSpec({
         timeEntry shouldBe null
     }
 
-    "f:updateTimeEntry should change all properties" {
+    "updateTimeEntry should change all properties" {
 
         val createTimeEntryData = CreateTimeEntryData(
             parent = ProjectParent(140214602),
@@ -213,4 +213,18 @@ class TogglTimeEntryClientSpec : StringSpec({
             tags shouldBe listOf("abc")
         }
     }
+
+    "deleteTimeEntry should remove object" {
+
+        val createTimeEntryData = CreateTimeEntryData(
+            parent = ProjectParent(140214602),
+            description = "deleteTimeEntry should remove object",
+            startTimestamp = 1545568770,
+            endTimestamp = 1545569770)
+        val createdTimeEntry = togglTimeEntryClient.createTimeEntry(createTimeEntryData)
+
+        val deletedStatus = togglTimeEntryClient.deleteTimeEntry(createdTimeEntry.id)
+        deletedStatus shouldBe true
+    }
+
 })

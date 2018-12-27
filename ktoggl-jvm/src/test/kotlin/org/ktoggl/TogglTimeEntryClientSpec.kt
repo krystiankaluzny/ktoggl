@@ -1,6 +1,7 @@
 package org.ktoggl
 
 import io.kotlintest.be
+import io.kotlintest.matchers.collections.shouldNotBeEmpty
 import io.kotlintest.matchers.date.after
 import io.kotlintest.matchers.date.before
 import io.kotlintest.matchers.numerics.shouldBeGreaterThanOrEqual
@@ -16,6 +17,7 @@ import org.ktoggl.entity.StartTimeEntryData
 import org.ktoggl.entity.UpdateTimeEntryData
 import org.ktoggl.jvm.entity.endTime
 import org.ktoggl.jvm.entity.startTime
+import org.ktoggl.jvm.entity.getTimeEntriesStartedInRange
 import java.time.OffsetDateTime
 
 class TogglTimeEntryClientSpec : StringSpec({
@@ -114,7 +116,7 @@ class TogglTimeEntryClientSpec : StringSpec({
             workspaceId shouldBe 2963000
             projectId shouldBe 140214602
             startTimestamp shouldBe 1545568770
-            endTimestamp!! shouldBeInRange(LongRange(timeBeforeStop.toEpochSecond(), timeAfterStop.toEpochSecond() + 1))
+            endTimestamp!! shouldBeInRange(LongRange(timeBeforeStop.toEpochSecond(), timeAfterStop.toEpochSecond()))
             startTime shouldBe OffsetDateTime.parse("2018-12-23T12:39:30Z")
             endTime!! shouldBe (after(timeBeforeStop) and before(timeAfterStop))
         }
@@ -135,7 +137,7 @@ class TogglTimeEntryClientSpec : StringSpec({
             id shouldBe startedTimeEntry.id
             workspaceId shouldBe 2963000
             projectId shouldBe 140214627
-            endTimestamp!! shouldBeInRange(LongRange(timeBeforeStop.toEpochSecond(), timeAfterStop.toEpochSecond() + 1))
+            endTimestamp!! shouldBeInRange(LongRange(timeBeforeStop.toEpochSecond(), timeAfterStop.toEpochSecond()))
             endTime!! shouldBe (after(timeBeforeStop) and before(timeAfterStop))
         }
     }
@@ -225,6 +227,22 @@ class TogglTimeEntryClientSpec : StringSpec({
 
         val deletedStatus = togglTimeEntryClient.deleteTimeEntry(createdTimeEntry.id)
         deletedStatus shouldBe true
+    }
+
+    "getTimeEntriesStartedInRange should return at least one object" {
+
+        val timeEntries = togglTimeEntryClient.getTimeEntriesStartedInRange(1545568770, 1545579770)
+        timeEntries.shouldNotBeEmpty()
+    }
+
+    "getTimeEntriesStartedInRange should work with OffsetDateTime" {
+
+        val timeEntries = togglTimeEntryClient.getTimeEntriesStartedInRange(1545568770, 1545579770)
+        val timeEntriesFromOffsetDateTime = togglTimeEntryClient.getTimeEntriesStartedInRange(
+            OffsetDateTime.parse("2018-12-23T12:39:30Z"),
+            OffsetDateTime.parse("2018-12-23T15:42:50Z"))
+
+        timeEntriesFromOffsetDateTime shouldBe timeEntries
     }
 
 })

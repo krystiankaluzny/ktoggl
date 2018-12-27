@@ -1,5 +1,6 @@
 package org.ktoggl.jvm.entity
 
+import org.ktoggl.TogglTimeEntryClient
 import org.ktoggl.entity.TimeEntry
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -13,3 +14,7 @@ val TimeEntry.startTime: OffsetDateTime
 
 val TimeEntry.endTime: OffsetDateTime?
     get() = if (endTimestamp != null) OffsetDateTime.ofInstant(Instant.ofEpochSecond(endTimestamp!!), ZoneOffset.UTC) else null
+
+fun TogglTimeEntryClient.getTimeEntriesStartedInRange(fromDate: OffsetDateTime, toDate: OffsetDateTime): List<TimeEntry> {
+    return getTimeEntriesStartedInRange(fromDate.toEpochSecond(), toDate.toEpochSecond())
+}

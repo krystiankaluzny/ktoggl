@@ -23,8 +23,8 @@ interface TogglUserClient {
 interface TogglWorkspaceClient {
 
     fun getWorkspaces(): List<Workspace>
-    fun getWorkspace(workspaceId: Long) : Workspace?
-    fun updateWorkspace(workspaceId: Long, workspaceData: WorkspaceData) : Workspace
+    fun getWorkspace(workspaceId: Long): Workspace?
+    fun updateWorkspace(workspaceId: Long, workspaceData: WorkspaceData): Workspace
     fun getWorkspaceProjects(workspaceId: Long, projectStateFilter: ProjectStateFilter = ProjectStateFilter.ACTIVE): List<Project>
     fun getWorkspaceTags(workspaceId: Long): List<Tag>
 }
@@ -38,6 +38,7 @@ interface TogglTimeEntryClient {
     fun getCurrentTimeEntry(): TimeEntry?
     fun updateTimeEntry(timeEntryId: Long, timeEntryData: UpdateTimeEntryData): TimeEntry
     fun deleteTimeEntry(timeEntryId: Long): Boolean
+    fun getTimeEntriesStartedInRange(fromTimestamp: Long, toTimestamp: Long): List<TimeEntry>
     fun updateTimeEntriesTags(timeEntryIds: List<Long>, tags: List<String>, updateTagsAction: org.ktoggl.TogglTimeEntryClient.UpdateTagsAction)
 
     enum class UpdateTagsAction {

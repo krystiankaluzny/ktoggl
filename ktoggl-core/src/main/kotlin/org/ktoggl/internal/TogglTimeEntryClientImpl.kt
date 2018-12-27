@@ -56,6 +56,15 @@ internal class TogglTimeEntryClientImpl(private val p: TimeUtilProvider, private
 
     override fun deleteTimeEntry(timeEntryId: Long): Boolean = togglApi.deleteTimeEntry(timeEntryId).execute().isSuccessful
 
+    override fun getTimeEntriesStartedInRange(fromTimestamp: Long, toTimestamp: Long): List<TimeEntry> {
+
+        val startDate = p.secondsToOffsetDateTimeStr(fromTimestamp)
+        val endDate = p.secondsToOffsetDateTimeStr(toTimestamp)
+
+        val timeEntries = togglApi.getTimeEntriesStartedInRange(startDate, endDate).execute().body() ?: emptyList()
+        return timeEntries.map { it.toExternal(p) }
+    }
+
     override fun updateTimeEntriesTags(timeEntryIds: List<Long>, tags: List<String>, updateTagsAction: org.ktoggl.TogglTimeEntryClient.UpdateTagsAction) {
     }
 }

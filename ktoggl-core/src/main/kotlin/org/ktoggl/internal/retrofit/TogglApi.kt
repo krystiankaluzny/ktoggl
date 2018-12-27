@@ -51,6 +51,9 @@ internal interface TogglApi {
     @DELETE("time_entries/{timeEntryId}")
     fun deleteTimeEntry(@Path("timeEntryId") timeEntryId: Long): Call<Void>
 
+    @GET("time_entries")
+    fun getTimeEntriesStartedInRange(@Query("start_date") startDate: String, @Query("end_date") endDate: String): Call<List<TimeEntry>>
+
     @POST("tags")
     fun createTag(@Body tagRequest: TagRequest): Call<TagResponse>
 

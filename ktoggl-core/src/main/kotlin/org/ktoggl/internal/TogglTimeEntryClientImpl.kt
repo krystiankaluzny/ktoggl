@@ -70,15 +70,52 @@ internal class TogglTimeEntryClientImpl(private val p: TimeUtilProvider, private
 
     override fun updateTimeEntriesTags(timeEntryIds: List<Long>, tags: List<String>, updateTagsAction: org.ktoggl.TogglTimeEntryClient.UpdateTagsAction): List<TimeEntry> {
 
+        if (timeEntryIds.isEmpty()) return emptyList()
+
+        var timeEntries = updateTimeEntriesTagsCall(timeEntryIds, tags, updateTagsAction)
+
+        if (updateTagsAction == REMOVE) {
+
+            timeEntries = clearAllTagsIfAnyNotRemoved(timeEntries, tags)
+        }
+
+        return timeEntries.map { it.toExternal(p) }
+    }
+
+    private fun updateTimeEntriesTagsCall(timeEntryIds: List<Long>, tags: List<String>, updateTagsAction: TogglTimeEntryClient.UpdateTagsAction): List<org.ktoggl.internal.retrofit.dto.TimeEntry> {
+
+        if (timeEntryIds.isEmpty()) return emptyList()
+
         val timeEntriesIdsString = timeEntryIds.joinToString(separator = ",")
-        val tagAction = when(updateTagsAction) {
+        val tagAction = when (updateTagsAction) {
             ADD -> "add"
             REMOVE -> "remove"
             OVERRIDE -> null
         }
-        val tagsTimeEntryRequest = TagsTimeEntryRequest(TagsTimeEntry(tags, tagAction))
-        val timeEntries = togglApi.updateTimeEntriesTags(timeEntriesIdsString, tagsTimeEntryRequest).execute().body()!!.timeEntries
 
-        return timeEntries.map { it.toExternal(p) }
+        val tagsTimeEntryRequest = TagsTimeEntryRequest(TagsTimeEntry(tags, tagAction))
+        return togglApi.updateTimeEntriesTags(timeEntriesIdsString, tagsTimeEntryRequest).execute().body()!!.timeEntries
     }
+
+    // Fix https://github.com/toggl/toggl_api_docs/issues/200
+    private fun clearAllTagsIfAnyNotRemoved(timeEntries: List<org.ktoggl.internal.retrofit.dto.TimeEntry>, tags: List<String>): List<org.ktoggl.internal.retrofit.dto.TimeEntry> {
+
+        val timeEntriesIdsToRemoveAllTags = mutableListOf<Long>()
+        val timeEntriesResponse = ArrayList<org.ktoggl.internal.retrofit.dto.TimeEntry>(timeEntries.size)
+
+        timeEntries.forEach {
+            if (it.tags?.intersect(tags)?.isNotEmpty() == true) {
+                timeEntriesIdsToRemoveAllTags.add(it.id!!)
+                timeEntriesResponse.add(it.copy(tags = emptyList()))
+            } else {
+                timeEntriesResponse.add(it)
+            }
+        }
+
+        updateTimeEntriesTagsCall(timeEntriesIdsToRemoveAllTags, emptyList(), OVERRIDE)
+
+        return timeEntriesResponse
+    }
+
+
 }

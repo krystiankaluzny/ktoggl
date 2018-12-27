@@ -317,7 +317,7 @@ class TogglTimeEntryClientSpec : StringSpec({
             }
     }
 
-    "f:updateTimeEntriesTags with 'override' action should add suitable tags" {
+    "updateTimeEntriesTags with 'override' action should add suitable tags" {
 
         val createTimeEntryData1 = CreateTimeEntryData(
             parent = ProjectParent(140214602),

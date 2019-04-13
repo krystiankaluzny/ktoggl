@@ -5,6 +5,24 @@ and the [Toggl Reports API v2](https://github.com/toggl/toggl_api_docs/blob/mast
 
 Project is under heavy development and its API (packages, classes, methods names) may change without warning.
 
+### Build
+
+Project is designed to work on JVM and AndroidRuntime, that's why contains **ktoggl-jvm** and **ktoggl-android** modules that extends **ktoggl-core**.
+
+Building ktoggl-android required Android SDK installed on OS.
+If you do not need ktoggl-android, you can use following command to build:
+```
+mvn -pl '!ktoggl-android' clean install
+```
+
+To build all ktoggl modules you have to:
+1. Install Android SDK
+2. Set **ANDROID_HOME** environment variable
+3. Install Android SDK Platform for 28 API Level
+4. Run 
+```
+mvn clean install
+```
 
 ### Skipped endpoints
 
@@ -82,7 +100,7 @@ If you think that something should be added faster, feel free to create an issue
     6. Update a time entry - YES
     7. Delete a time entry - YES
     8. Get time entries started in a specific time range - YES
-    9. Bulk update time entries tags - NO
+    9. Bulk update time entries tags - YES
 
 11. Users
     1. Get current user data without related - YES
@@ -96,7 +114,7 @@ If you think that something should be added faster, feel free to create an issue
     1. Invite users to workspace - NO
     2. Update workspace user - NO
     3. Delete workspace user - NO
-    4. Get workspace users - 
+    4. Get workspace users - NO
 
 13. Workspaces
     1. Get workspaces - YES

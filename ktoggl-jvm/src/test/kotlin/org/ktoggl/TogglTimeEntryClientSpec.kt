@@ -221,7 +221,7 @@ class TogglTimeEntryClientSpec : StringSpec({
     "deleteTimeEntry should remove object" {
 
         val createTimeEntryData = CreateTimeEntryData(
-            parent = ProjectParent(140214602),
+            parent = ProjectParent(140214657),
             description = "deleteTimeEntry should remove object",
             startTimestamp = 1545568770,
             endTimestamp = 1545569770)
@@ -250,7 +250,7 @@ class TogglTimeEntryClientSpec : StringSpec({
     "updateTimeEntriesTags with 'add' action should add suitable tags" {
 
         val createTimeEntryData1 = CreateTimeEntryData(
-            parent = ProjectParent(140214602),
+            parent = ProjectParent(140214541),
             description = "updateTimeEntriesTags with 'add' action should add suitable tags",
             startTimestamp = 1545538770,
             endTimestamp = 1545539770,
@@ -258,7 +258,7 @@ class TogglTimeEntryClientSpec : StringSpec({
         val createdTimeEntry1 = togglTimeEntryClient.createTimeEntry(createTimeEntryData1)
 
         val createTimeEntryData2 = CreateTimeEntryData(
-            parent = ProjectParent(140214602),
+            parent = ProjectParent(140214541),
             description = "updateTimeEntriesTags with 'add' action should add suitable tags",
             startTimestamp = 1545548770,
             endTimestamp = 1545549770,
@@ -286,7 +286,7 @@ class TogglTimeEntryClientSpec : StringSpec({
     "updateTimeEntriesTags with 'remove' action should add suitable tags" {
 
         val createTimeEntryData1 = CreateTimeEntryData(
-            parent = ProjectParent(140214602),
+            parent = ProjectParent(140214510),
             description = "updateTimeEntriesTags with 'remove' action should add suitable tags",
             startTimestamp = 1545536770,
             endTimestamp = 1545537770,
@@ -294,7 +294,7 @@ class TogglTimeEntryClientSpec : StringSpec({
         val createdTimeEntry1 = togglTimeEntryClient.createTimeEntry(createTimeEntryData1)
 
         val createTimeEntryData2 = CreateTimeEntryData(
-            parent = ProjectParent(140214602),
+            parent = ProjectParent(140214510),
             description = "updateTimeEntriesTags with 'remove' action should add suitable tags",
             startTimestamp = 1545546770,
             endTimestamp = 1545547770,
@@ -320,7 +320,7 @@ class TogglTimeEntryClientSpec : StringSpec({
     "updateTimeEntriesTags with 'override' action should add suitable tags" {
 
         val createTimeEntryData1 = CreateTimeEntryData(
-            parent = ProjectParent(140214602),
+            parent = ProjectParent(140214570),
             description = "updateTimeEntriesTags with 'override' action should add suitable tags",
             startTimestamp = 1545516770,
             endTimestamp = 1545527770,
@@ -328,7 +328,7 @@ class TogglTimeEntryClientSpec : StringSpec({
         val createdTimeEntry1 = togglTimeEntryClient.createTimeEntry(createTimeEntryData1)
 
         val createTimeEntryData2 = CreateTimeEntryData(
-            parent = ProjectParent(140214602),
+            parent = ProjectParent(140214570),
             description = "updateTimeEntriesTags with 'override' action should add suitable tags",
             startTimestamp = 1545526770,
             endTimestamp = 1545537770,

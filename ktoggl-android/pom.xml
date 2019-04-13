@@ -13,10 +13,7 @@
     <artifactId>ktoggl-android</artifactId>
 
     <properties>
-        <!-- Android configs -->
-        <android.platform>19</android.platform>
-        <android.debug>false</android.debug>
-        <proguard.skip>true</proguard.skip>
+        <android.sdk.platform>28</android.sdk.platform>
     </properties>
 
     <dependencies>

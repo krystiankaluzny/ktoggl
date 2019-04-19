@@ -1,4 +1,4 @@
-package org.ktoggl.android.request
+package org.ktoggl.jvm.request
 
 import org.ktoggl.request.BaseReportParameters
 import org.ktoggl.request.Billable

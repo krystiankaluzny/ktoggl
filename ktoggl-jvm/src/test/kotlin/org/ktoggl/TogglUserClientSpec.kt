@@ -2,7 +2,7 @@ package org.ktoggl
 
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
-import org.ktoggl.android.JvmTogglClientBuilder
+import org.ktoggl.jvm.JvmTogglClientBuilder
 import org.ktoggl.entity.Day
 import org.ktoggl.entity.UserData
 import org.ktoggl.entity.UserPassword

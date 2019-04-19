@@ -1,4 +1,4 @@
-package org.ktoggl.android
+package org.ktoggl.jvm
 
 import org.ktoggl.TimeUtilProvider
 import java.time.Instant

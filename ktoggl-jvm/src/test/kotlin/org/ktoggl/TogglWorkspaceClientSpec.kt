@@ -5,7 +5,7 @@ import io.kotlintest.matchers.string.shouldBeEmpty
 import io.kotlintest.shouldBe
 import io.kotlintest.shouldNotBe
 import io.kotlintest.specs.StringSpec
-import org.ktoggl.android.JvmTogglClientBuilder
+import org.ktoggl.jvm.JvmTogglClientBuilder
 import org.ktoggl.entity.*
 
 class TogglWorkspaceClientSpec : StringSpec({

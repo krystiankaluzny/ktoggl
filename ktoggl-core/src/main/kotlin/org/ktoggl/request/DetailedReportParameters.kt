@@ -2,13 +2,8 @@ package org.ktoggl.request
 
 data class DetailedReportParameters(
     val baseReportParameters: BaseReportParameters = BaseReportParameters(),
-    val detailedOrder: DetailedOrder? = null,
-    val page: Int = ALL_PAGES
-) {
-    companion object {
-        const val ALL_PAGES = -1
-    }
-}
+    val detailedOrder: DetailedOrder? = null
+)
 
 enum class DetailedOrder(val field: String, val ascending: Boolean) {
 

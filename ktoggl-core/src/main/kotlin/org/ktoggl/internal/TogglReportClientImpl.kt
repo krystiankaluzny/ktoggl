@@ -9,11 +9,13 @@ import org.ktoggl.request.BaseReportParameters
 import org.ktoggl.request.DetailedReportParameters
 import org.ktoggl.request.SummaryReportParameters
 import org.ktoggl.request.WeeklyReportParameters
+import kotlin.math.min
 
 internal class TogglReportClientImpl(private val p: TimeUtilProvider, private val togglReportApi: TogglReportApi) : TogglReportClient {
 
     private companion object {
-        const val userAgent = "TogglClient"
+        const val USER_AGENT = "TogglClient"
+        const val SEC_IN_YEAR = 365 * 24 * 60 * 60
     }
 
     override fun getWeeklyReport(workspaceId: Long, weeklyReportParameters: WeeklyReportParameters) {
@@ -33,24 +35,31 @@ internal class TogglReportClientImpl(private val p: TimeUtilProvider, private va
             params["order_desc"] = if (it.ascending) "off" else "on"
         }
 
-        if (detailedReportParameters.page > 0) {
+        val detailedResponsePerPages = mutableListOf<DetailedReportResponse>()
 
-            val detailedReport = requestDetailedReportPage(params, detailedReportParameters.page)
-            return detailedReport.toExternal(p)
+        val fromTimestamp = detailedReportParameters.baseReportParameters.fromTimestamp
+        val toTimestamp = detailedReportParameters.baseReportParameters.toTimestamp
 
-        } else {
-            val detailedResponsePerPages = mutableListOf<DetailedReportResponse>()
-
-            var detailedReportResponse: DetailedReportResponse
-            var page = 0
+        if (fromTimestamp != null && toTimestamp != null) {
+            var from = fromTimestamp
+            var to = min(from + SEC_IN_YEAR, toTimestamp)
 
             do {
-                detailedReportResponse = requestDetailedReportPage(params, page++)
-                detailedResponsePerPages.add(detailedReportResponse)
-            } while (detailedReportResponse.per_page * page < detailedReportResponse.total_count)
+                params["since"] = p.secondsToLocalDateStr(from)
+                params["until"] = p.secondsToLocalDateStr(to)
 
-            return detailedResponsePerPages.toExternal(p)
+                requestAllPagesOfDetailedReport(params, detailedResponsePerPages)
+
+                from += SEC_IN_YEAR
+                to = min(from + SEC_IN_YEAR, toTimestamp)
+            } while (from < to)
+
+        } else {
+            requestAllPagesOfDetailedReport(params, detailedResponsePerPages)
         }
+
+        return detailedResponsePerPages.toExternal(p)
+
     }
 
     override fun getSummaryReport(workspaceId: Long, summaryReportParameters: SummaryReportParameters) {
@@ -69,7 +78,7 @@ internal class TogglReportClientImpl(private val p: TimeUtilProvider, private va
 
         params["workspace_id"] = workspaceId.toString()
 
-        baseReportParameters.userAgent.let { params["user_agent"] = it ?: userAgent }
+        baseReportParameters.userAgent.let { params["user_agent"] = it ?: USER_AGENT }
         baseReportParameters.fromTimestamp?.let { params["since"] = p.secondsToLocalDateStr(it) }
         baseReportParameters.toTimestamp?.let { params["until"] = p.secondsToLocalDateStr(it) }
         baseReportParameters.billable?.let { params["billable"] = it.value }
@@ -85,6 +94,17 @@ internal class TogglReportClientImpl(private val p: TimeUtilProvider, private va
         baseReportParameters.rounding?.let { params["rounding"] = if (it) "on" else "off" }
 
         return params
+    }
+
+    private fun requestAllPagesOfDetailedReport(params: MutableMap<String, String>, container: MutableList<DetailedReportResponse>) {
+
+        var detailedReportResponse: DetailedReportResponse
+        var page = 0
+
+        do {
+            detailedReportResponse = requestDetailedReportPage(params, ++page)
+            container.add(detailedReportResponse)
+        } while (detailedReportResponse.per_page * page < detailedReportResponse.total_count)
     }
 
     private fun requestDetailedReportPage(params: MutableMap<String, String>, page: Int): DetailedReportResponse {

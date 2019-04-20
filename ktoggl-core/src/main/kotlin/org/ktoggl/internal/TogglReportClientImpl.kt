@@ -4,6 +4,7 @@ import org.ktoggl.TimeUtilProvider
 import org.ktoggl.TogglReportClient
 import org.ktoggl.entity.DetailedReport
 import org.ktoggl.internal.retrofit.TogglReportApi
+import org.ktoggl.internal.retrofit.dto.DetailedReportResponse
 import org.ktoggl.request.BaseReportParameters
 import org.ktoggl.request.DetailedReportParameters
 import org.ktoggl.request.SummaryReportParameters
@@ -32,11 +33,38 @@ internal class TogglReportClientImpl(private val p: TimeUtilProvider, private va
             params["order_field"] = it.field
             params["order_desc"] = if (it.ascending) "off" else "on"
         }
-//        detailedReportParameters.page
 
-        val detailedReport = togglReportApi.detailed(params).execute().body() ?: return emptyDetailedReport
+        if (detailedReportParameters.page > 0) {
+            params["page"] = detailedReportParameters.page.toString()
 
-        return detailedReport.toExternal(p)
+            val detailedReport = togglReportApi.detailed(params).execute().body() ?: return emptyDetailedReport
+
+            return detailedReport.toExternal(p)
+
+        } else {
+            params["page"] = "1"
+
+            var detailedReportResponse = togglReportApi.detailed(params).execute().body() ?: return emptyDetailedReport
+
+            if (detailedReportResponse.total_count > detailedReportResponse.per_page) {
+
+                val pageCount = detailedReportResponse.total_count / detailedReportResponse.per_page + 1
+
+                val detailedResponsePerPages = ArrayList<DetailedReportResponse>(pageCount)
+                detailedResponsePerPages.add(detailedReportResponse)
+
+                for (page in 2..pageCount) {
+                    params["page"] = page.toString()
+                    detailedReportResponse = togglReportApi.detailed(params).execute().body() ?: return emptyDetailedReport
+                    detailedResponsePerPages.add(detailedReportResponse)
+                }
+
+                return detailedResponsePerPages.toExternal(p)
+
+            } else {
+                return detailedReportResponse.toExternal(p)
+            }
+        }
     }
 
     override fun getSummaryReport(workspaceId: Long, summaryReportParameters: SummaryReportParameters) {

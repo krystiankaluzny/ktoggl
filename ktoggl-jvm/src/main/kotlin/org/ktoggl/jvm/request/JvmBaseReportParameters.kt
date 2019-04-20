@@ -2,11 +2,12 @@ package org.ktoggl.jvm.request
 
 import org.ktoggl.request.BaseReportParameters
 import org.ktoggl.request.Billable
+import java.time.LocalDate
 
 class JvmBaseReportParameters(
     userAgent: String? = null,
-    fromTimestamp: Long? = null,
-    toTimestamp: Long? = null,
+    fromDate: LocalDate? = null,
+    toDate: LocalDate? = null,
     billable: Billable? = null,
     clientIds: List<Long> = emptyList(),
     projectIds: List<Long> = emptyList(),
@@ -22,8 +23,8 @@ class JvmBaseReportParameters(
     rounding: Boolean? = null
 ) : BaseReportParameters(
     userAgent,
-    fromTimestamp,
-    toTimestamp,
+    fromDate?.toEpochDay()?.times(24 * 60 * 60),
+    toDate?.toEpochDay()?.times(24 * 60 * 60),
     billable,
     clientIds,
     projectIds,
@@ -36,4 +37,5 @@ class JvmBaseReportParameters(
     description,
     withoutDescription,
     distinctRates,
-    rounding)
+    rounding
+)

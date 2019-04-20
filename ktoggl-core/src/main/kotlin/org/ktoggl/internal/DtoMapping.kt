@@ -56,6 +56,7 @@ internal fun org.ktoggl.internal.retrofit.dto.Workspace.toExternal(p: TimeUtilPr
         defaultHourlyRate = default_hourly_rate ?: 0.0,
         lastUpdateTimestamp = p.toEpochSecond(at)
     )
+
 internal fun WorkspaceData.toInternal() =
     org.ktoggl.internal.retrofit.dto.WorkspaceData(
         name = name,
@@ -114,6 +115,20 @@ internal fun DetailedReportResponse.toExternal(p: TimeUtilProvider) =
         totalCurrencies = total_currencies.map { it.toExternal() },
         detailedTimeEntries = data.map { it.toExternal(p) }
     )
+
+internal fun List<DetailedReportResponse>.toExternal(p: TimeUtilProvider): DetailedReport {
+
+    if (isEmpty()) return DetailedReport(0, 0, 0, 0, emptyList(), emptyList())
+
+    return DetailedReport(
+        totalCount = first().total_count,
+        perPage = first().per_page,
+        totalGrand = first().total_grand,
+        totalPayment = first().total_billable,
+        totalCurrencies = first().total_currencies.map { it.toExternal() },
+        detailedTimeEntries = flatMap { it.data }.map { it.toExternal(p) }
+    )
+}
 
 internal fun org.ktoggl.internal.retrofit.dto.TimeEntry.toExternal(p: TimeUtilProvider) =
     TimeEntry(

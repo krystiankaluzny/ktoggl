@@ -106,8 +106,11 @@ internal fun org.ktoggl.internal.retrofit.dto.DetailedTimeEntry.toExternal(p: Ti
         tags = tags
     )
 
-internal fun DetailedReportResponse.toExternal(p: TimeUtilProvider) =
-    DetailedReport(
+internal fun DetailedReportResponse.toExternal(p: TimeUtilProvider): DetailedReport {
+
+    if (DetailedReportResponse.EMPTY == this) return DetailedReport.EMPTY
+
+    return DetailedReport(
         totalCount = total_count,
         perPage = per_page,
         totalGrand = total_grand,
@@ -115,10 +118,11 @@ internal fun DetailedReportResponse.toExternal(p: TimeUtilProvider) =
         totalCurrencies = total_currencies.map { it.toExternal() },
         detailedTimeEntries = data.map { it.toExternal(p) }
     )
+}
 
 internal fun List<DetailedReportResponse>.toExternal(p: TimeUtilProvider): DetailedReport {
 
-    if (isEmpty()) return DetailedReport(0, 0, 0, 0, emptyList(), emptyList())
+    if (isEmpty()) return DetailedReport.EMPTY
 
     return DetailedReport(
         totalCount = first().total_count,

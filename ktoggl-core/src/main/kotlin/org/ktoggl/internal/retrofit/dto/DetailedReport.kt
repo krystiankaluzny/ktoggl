@@ -7,7 +7,11 @@ internal data class DetailedReportResponse(
     val total_billable: Long?,
     val total_currencies: List<CurrencyAmount>,
     val data: List<DetailedTimeEntry>
-)
+) {
+    companion object {
+        val EMPTY = DetailedReportResponse(0, 0, 0, 0, emptyList(), emptyList())
+    }
+}
 
 internal data class DetailedTimeEntry(
     val id: Long,

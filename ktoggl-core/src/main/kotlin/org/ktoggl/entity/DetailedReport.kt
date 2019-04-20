@@ -7,7 +7,11 @@ data class DetailedReport(
     val totalPayment: Long?,
     val totalCurrencies: List<CurrencyAmount>,
     val detailedTimeEntries: List<DetailedTimeEntry>
-)
+) {
+    companion object {
+        val EMPTY = DetailedReport(0, 0, 0, 0, emptyList(), emptyList())
+    }
+}
 
 data class CurrencyAmount(
     val currency: String?,

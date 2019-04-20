@@ -14,7 +14,6 @@ internal class TogglReportClientImpl(private val p: TimeUtilProvider, private va
 
     private companion object {
         const val userAgent = "TogglClient"
-        val emptyDetailedReport = DetailedReport(0, 0, 0, 0, emptyList(), emptyList())
     }
 
     override fun getWeeklyReport(workspaceId: Long, weeklyReportParameters: WeeklyReportParameters) {
@@ -35,35 +34,22 @@ internal class TogglReportClientImpl(private val p: TimeUtilProvider, private va
         }
 
         if (detailedReportParameters.page > 0) {
-            params["page"] = detailedReportParameters.page.toString()
 
-            val detailedReport = togglReportApi.detailed(params).execute().body() ?: return emptyDetailedReport
-
+            val detailedReport = requestDetailedReportPage(params, detailedReportParameters.page)
             return detailedReport.toExternal(p)
 
         } else {
-            params["page"] = "1"
+            val detailedResponsePerPages = mutableListOf<DetailedReportResponse>()
 
-            var detailedReportResponse = togglReportApi.detailed(params).execute().body() ?: return emptyDetailedReport
+            var detailedReportResponse: DetailedReportResponse
+            var page = 0
 
-            if (detailedReportResponse.total_count > detailedReportResponse.per_page) {
-
-                val pageCount = detailedReportResponse.total_count / detailedReportResponse.per_page + 1
-
-                val detailedResponsePerPages = ArrayList<DetailedReportResponse>(pageCount)
+            do {
+                detailedReportResponse = requestDetailedReportPage(params, page++)
                 detailedResponsePerPages.add(detailedReportResponse)
+            } while (detailedReportResponse.per_page * page < detailedReportResponse.total_count)
 
-                for (page in 2..pageCount) {
-                    params["page"] = page.toString()
-                    detailedReportResponse = togglReportApi.detailed(params).execute().body() ?: return emptyDetailedReport
-                    detailedResponsePerPages.add(detailedReportResponse)
-                }
-
-                return detailedResponsePerPages.toExternal(p)
-
-            } else {
-                return detailedReportResponse.toExternal(p)
-            }
+            return detailedResponsePerPages.toExternal(p)
         }
     }
 
@@ -99,5 +85,11 @@ internal class TogglReportClientImpl(private val p: TimeUtilProvider, private va
         baseReportParameters.rounding?.let { params["rounding"] = if (it) "on" else "off" }
 
         return params
+    }
+
+    private fun requestDetailedReportPage(params: MutableMap<String, String>, page: Int): DetailedReportResponse {
+
+        params["page"] = page.toString()
+        return togglReportApi.detailed(params).execute().body() ?: DetailedReportResponse.EMPTY
     }
 }

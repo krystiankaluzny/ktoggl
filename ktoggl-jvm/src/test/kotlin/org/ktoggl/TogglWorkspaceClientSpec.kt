@@ -1,12 +1,17 @@
 package org.ktoggl
 
+import io.kotlintest.assertSoftly
 import io.kotlintest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotlintest.matchers.string.shouldBeEmpty
 import io.kotlintest.shouldBe
 import io.kotlintest.shouldNotBe
 import io.kotlintest.specs.StringSpec
+import org.ktoggl.entity.Project
+import org.ktoggl.entity.ProjectStateFilter
+import org.ktoggl.entity.RoundingType
+import org.ktoggl.entity.Tag
+import org.ktoggl.entity.WorkspaceData
 import org.ktoggl.jvm.JvmTogglClientBuilder
-import org.ktoggl.entity.*
 
 class TogglWorkspaceClientSpec : StringSpec({
 
@@ -19,6 +24,29 @@ class TogglWorkspaceClientSpec : StringSpec({
         workspaces.size shouldBe 1
         workspaces.first()
             .apply {
+                assertSoftly {
+                    id shouldBe 2963000
+                    name shouldBe "Enormous2calm4's workspace"
+                    premium shouldBe false
+                    admin shouldBe true
+                    defaultHourlyRate shouldBe 0.0
+                    defaultCurrency shouldBe "USD"
+                    onlyAdminsMayCreateProjects shouldBe false
+                    onlyAdminsSeeBillableRates shouldBe false
+                    rounding shouldBe RoundingType.ROUND_UP
+                    roundingMinutes shouldBe 0
+                    logoUrl.shouldBeEmpty()
+                }
+            }
+    }
+
+    "getWorkspace should return test user's workspace" {
+
+        val workspace = togglWorkspaceClient.getWorkspace(2963000)
+
+        workspace shouldNotBe null
+        workspace?.apply {
+            assertSoftly {
                 id shouldBe 2963000
                 name shouldBe "Enormous2calm4's workspace"
                 premium shouldBe false
@@ -31,25 +59,6 @@ class TogglWorkspaceClientSpec : StringSpec({
                 roundingMinutes shouldBe 0
                 logoUrl.shouldBeEmpty()
             }
-    }
-
-    "getWorkspace should return test user's workspace" {
-
-        val workspace = togglWorkspaceClient.getWorkspace(2963000)
-
-        workspace shouldNotBe null
-        workspace?.apply {
-            id shouldBe 2963000
-            name shouldBe "Enormous2calm4's workspace"
-            premium shouldBe false
-            admin shouldBe true
-            defaultHourlyRate shouldBe 0.0
-            defaultCurrency shouldBe "USD"
-            onlyAdminsMayCreateProjects shouldBe false
-            onlyAdminsSeeBillableRates shouldBe false
-            rounding shouldBe RoundingType.ROUND_UP
-            roundingMinutes shouldBe 0
-            logoUrl.shouldBeEmpty()
         }
     }
 
@@ -113,8 +122,8 @@ class TogglWorkspaceClientSpec : StringSpec({
         val tags = togglWorkspaceClient.getWorkspaceTags(2963000)
 
         tags.shouldContainExactlyInAnyOrder(
-            Tag(id=4976917, workspaceId=2963000, name="abc"),
-            Tag(id=4976916, workspaceId=2963000, name="test")
+            Tag(id = 4976917, workspaceId = 2963000, name = "abc"),
+            Tag(id = 4976916, workspaceId = 2963000, name = "test")
         )
     }
 })

@@ -1,5 +1,6 @@
 package org.ktoggl
 
+import io.kotlintest.assertSoftly
 import io.kotlintest.be
 import io.kotlintest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotlintest.matchers.collections.shouldHaveSize
@@ -12,11 +13,11 @@ import io.kotlintest.should
 import io.kotlintest.shouldBe
 import io.kotlintest.shouldNotBe
 import io.kotlintest.specs.StringSpec
-import org.ktoggl.jvm.JvmTogglClientBuilder
 import org.ktoggl.entity.CreateTimeEntryData
 import org.ktoggl.entity.ProjectParent
 import org.ktoggl.entity.StartTimeEntryData
 import org.ktoggl.entity.UpdateTimeEntryData
+import org.ktoggl.jvm.JvmTogglClientBuilder
 import org.ktoggl.jvm.entity.endTime
 import org.ktoggl.jvm.entity.getTimeEntriesStartedInRange
 import org.ktoggl.jvm.entity.startTime
@@ -34,18 +35,20 @@ class TogglTimeEntryClientSpec : StringSpec({
 
         val timeEntry = togglTimeEntryClient.createTimeEntry(createTimeEntryData)
         timeEntry.apply {
-            id shouldNotBe null
-            workspaceId shouldBe 2963000
-            projectId shouldBe 140214510
-            taskId shouldBe null
-            description shouldBe null
-            billable shouldBe false
-            startTimestamp shouldBe 1483274096
-            endTimestamp shouldBe 1483275096
-            startTime shouldBe OffsetDateTime.parse("2017-01-01T12:34:56Z")
-            endTime shouldBe OffsetDateTime.parse("2017-01-01T12:51:36Z")
-            durationSeconds shouldBe 1000
-            tags shouldBe emptyList()
+            assertSoftly {
+                id shouldNotBe null
+                workspaceId shouldBe 2963000
+                projectId shouldBe 140214510
+                taskId shouldBe null
+                description shouldBe null
+                billable shouldBe false
+                startTimestamp shouldBe 1483274096
+                endTimestamp shouldBe 1483275096
+                startTime shouldBe OffsetDateTime.parse("2017-01-01T12:34:56Z")
+                endTime shouldBe OffsetDateTime.parse("2017-01-01T12:51:36Z")
+                durationSeconds shouldBe 1000
+                tags shouldBe emptyList()
+            }
         }
     }
 
@@ -59,18 +62,20 @@ class TogglTimeEntryClientSpec : StringSpec({
 
         val timeEntry = togglTimeEntryClient.createTimeEntry(createTimeEntryData)
         timeEntry.apply {
-            id shouldNotBe null
-            workspaceId shouldBe 2963000
-            projectId shouldBe 140214541
-            taskId shouldBe null
-            description shouldBe "createTimeEntry should create time entry with tag and description"
-            billable shouldBe false
-            startTimestamp shouldBe 1483274096
-            endTimestamp shouldBe 1483275096
-            startTime shouldBe OffsetDateTime.parse("2017-01-01T12:34:56Z")
-            endTime shouldBe OffsetDateTime.parse("2017-01-01T12:51:36Z")
-            durationSeconds shouldBe 1000
-            tags shouldBe listOf("abc")
+            assertSoftly {
+                id shouldNotBe null
+                workspaceId shouldBe 2963000
+                projectId shouldBe 140214541
+                taskId shouldBe null
+                description shouldBe "createTimeEntry should create time entry with tag and description"
+                billable shouldBe false
+                startTimestamp shouldBe 1483274096
+                endTimestamp shouldBe 1483275096
+                startTime shouldBe OffsetDateTime.parse("2017-01-01T12:34:56Z")
+                endTime shouldBe OffsetDateTime.parse("2017-01-01T12:51:36Z")
+                durationSeconds shouldBe 1000
+                tags shouldBe listOf("abc")
+            }
         }
     }
 
@@ -84,24 +89,26 @@ class TogglTimeEntryClientSpec : StringSpec({
 
         val timeEntry = togglTimeEntryClient.startTimeEntry(startTimeEntryData)
         timeEntry.apply {
-            id shouldNotBe null
-            workspaceId shouldBe 2963000
-            projectId shouldBe 140214570
-            taskId shouldBe null
-            description shouldBe "startTimeEntry should create time entry"
-            billable shouldBe false
-            startTimestamp shouldBeGreaterThanOrEqual currentTime.toEpochSecond()
-            endTimestamp shouldBe null
-            durationSeconds shouldBe -startTimestamp
-            startTime should (be(currentTime) or after(currentTime))
-            endTime shouldBe null
-            tags shouldBe listOf("test")
+            assertSoftly {
+                id shouldNotBe null
+                workspaceId shouldBe 2963000
+                projectId shouldBe 140214570
+                taskId shouldBe null
+                description shouldBe "startTimeEntry should create time entry"
+                billable shouldBe false
+                startTimestamp shouldBeGreaterThanOrEqual currentTime.toEpochSecond()
+                endTimestamp shouldBe null
+                durationSeconds shouldBe -startTimestamp
+                startTime should (be(currentTime) or after(currentTime))
+                endTime shouldBe null
+                tags shouldBe listOf("test")
+            }
         }
 
         togglTimeEntryClient.stopTimeEntry(timeEntry.id)
     }
 
-    "f:createTimeEntry without endTime then stopTimeEntry should set endTime" {
+    "!createTimeEntry without endTime then stopTimeEntry should set endTime" {
 
         val createTimeEntryData = CreateTimeEntryData(
             startTimestamp = 1545568770,
@@ -114,13 +121,15 @@ class TogglTimeEntryClientSpec : StringSpec({
         val timeAfterStop = OffsetDateTime.now().plusSeconds(1)
 
         timeEntry.apply {
-            id shouldBe createdTimeEntry.id
-            workspaceId shouldBe 2963000
-            projectId shouldBe 140214602
-            startTimestamp shouldBe 1545568770
-            endTimestamp!! shouldBeInRange (LongRange(timeBeforeStop.toEpochSecond(), timeAfterStop.toEpochSecond()))
-            startTime shouldBe OffsetDateTime.parse("2018-12-23T12:39:30Z")
-            endTime!! shouldBe (after(timeBeforeStop) and before(timeAfterStop))
+            assertSoftly {
+                id shouldBe createdTimeEntry.id
+                workspaceId shouldBe 2963000
+                projectId shouldBe 140214602
+                startTimestamp shouldBe 1545568770
+                endTimestamp!! shouldBeInRange (LongRange(timeBeforeStop.toEpochSecond(), timeAfterStop.toEpochSecond()))
+                startTime shouldBe OffsetDateTime.parse("2018-12-23T12:39:30Z")
+                endTime!! shouldBe (after(timeBeforeStop) and before(timeAfterStop))
+            }
         }
     }
 
@@ -136,11 +145,13 @@ class TogglTimeEntryClientSpec : StringSpec({
         val timeAfterStop = OffsetDateTime.now().plusSeconds(1)
 
         timeEntry.apply {
-            id shouldBe startedTimeEntry.id
-            workspaceId shouldBe 2963000
-            projectId shouldBe 140214627
-            endTimestamp!! shouldBeInRange (LongRange(timeBeforeStop.toEpochSecond(), timeAfterStop.toEpochSecond()))
-            endTime!! shouldBe (after(timeBeforeStop) and before(timeAfterStop))
+            assertSoftly {
+                id shouldBe startedTimeEntry.id
+                workspaceId shouldBe 2963000
+                projectId shouldBe 140214627
+                endTimestamp!! shouldBeInRange (LongRange(timeBeforeStop.toEpochSecond(), timeAfterStop.toEpochSecond()))
+                endTime!! shouldBe (after(timeBeforeStop) and before(timeAfterStop))
+            }
         }
     }
 
@@ -148,18 +159,20 @@ class TogglTimeEntryClientSpec : StringSpec({
 
         val timeEntry = togglTimeEntryClient.getTimeEntry(1060627344L)
         timeEntry!!.apply {
-            id shouldBe 1060627344L
-            workspaceId shouldBe 2963000
-            projectId shouldBe 140214510
-            taskId shouldBe null
-            description shouldBe "test time entry"
-            billable shouldBe false
-            startTimestamp shouldBe 1483274096
-            endTimestamp shouldBe 1483275096
-            startTime shouldBe OffsetDateTime.parse("2017-01-01T12:34:56Z")
-            endTime shouldBe OffsetDateTime.parse("2017-01-01T12:51:36Z")
-            durationSeconds shouldBe 1000
-            tags shouldBe listOf("abc", "test")
+            assertSoftly {
+                id shouldBe 1060627344L
+                workspaceId shouldBe 2963000
+                projectId shouldBe 140214510
+                taskId shouldBe null
+                description shouldBe "test time entry"
+                billable shouldBe false
+                startTimestamp shouldBe 1483274096
+                endTimestamp shouldBe 1483275096
+                startTime shouldBe OffsetDateTime.parse("2017-01-01T12:34:56Z")
+                endTime shouldBe OffsetDateTime.parse("2017-01-01T12:51:36Z")
+                durationSeconds shouldBe 1000
+                tags shouldBe listOf("abc", "test")
+            }
         }
     }
 
@@ -204,17 +217,19 @@ class TogglTimeEntryClientSpec : StringSpec({
         val timeEntry = togglTimeEntryClient.updateTimeEntry(createdTimeEntry.id, updateTimeEntryData)
 
         timeEntry.apply {
-            id shouldBe createdTimeEntry.id
-            workspaceId shouldBe 2963000
-            projectId shouldBe 140214627
-            taskId shouldBe null
-            description shouldBe "updateTimeEntry should change all properties"
-            startTimestamp shouldBe 1545557770
-            endTimestamp!! shouldBe 1545559770
-            durationSeconds shouldBe 2000
-            startTime shouldBe OffsetDateTime.parse("2018-12-23T09:36:10Z")
-            endTime!! shouldBe OffsetDateTime.parse("2018-12-23T10:09:30Z")
-            tags shouldBe listOf("abc")
+            assertSoftly {
+                id shouldBe createdTimeEntry.id
+                workspaceId shouldBe 2963000
+                projectId shouldBe 140214627
+                taskId shouldBe null
+                description shouldBe "updateTimeEntry should change all properties"
+                startTimestamp shouldBe 1545557770
+                endTimestamp!! shouldBe 1545559770
+                durationSeconds shouldBe 2000
+                startTime shouldBe OffsetDateTime.parse("2018-12-23T09:36:10Z")
+                endTime!! shouldBe OffsetDateTime.parse("2018-12-23T10:09:30Z")
+                tags shouldBe listOf("abc")
+            }
         }
     }
 

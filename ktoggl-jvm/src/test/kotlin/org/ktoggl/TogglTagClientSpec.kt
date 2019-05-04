@@ -1,11 +1,12 @@
 package org.ktoggl
 
+import io.kotlintest.assertSoftly
 import io.kotlintest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotlintest.shouldBe
 import io.kotlintest.shouldNotBe
 import io.kotlintest.specs.StringSpec
-import org.ktoggl.jvm.JvmTogglClientBuilder
 import org.ktoggl.entity.Tag
+import org.ktoggl.jvm.JvmTogglClientBuilder
 
 class TogglTagClientSpec : StringSpec({
 
@@ -16,9 +17,11 @@ class TogglTagClientSpec : StringSpec({
 
         val tagCreated = togglTagClient.createTag(2963000, "test_tag")
         tagCreated.apply {
-            id shouldNotBe null
-            workspaceId shouldBe 2963000
-            name shouldBe "test_tag"
+            assertSoftly {
+                id shouldNotBe null
+                workspaceId shouldBe 2963000
+                name shouldBe "test_tag"
+            }
         }
 
         val deletedStatus = togglTagClient.deleteTag(tagCreated.id)
@@ -38,16 +41,20 @@ class TogglTagClientSpec : StringSpec({
 
         val tag = togglTagClient.updateTag(4976916, newName)
         tag.apply {
-            id shouldBe 4976916
-            workspaceId shouldBe 2963000
-            name shouldBe newName
+            assertSoftly {
+                id shouldBe 4976916
+                workspaceId shouldBe 2963000
+                name shouldBe newName
+            }
         }
 
         val tagBack = togglTagClient.updateTag(4976916, oldName)
         tagBack.apply {
-            id shouldBe 4976916
-            workspaceId shouldBe 2963000
-            name shouldBe oldName
+            assertSoftly {
+                id shouldBe 4976916
+                workspaceId shouldBe 2963000
+                name shouldBe oldName
+            }
         }
     }
 

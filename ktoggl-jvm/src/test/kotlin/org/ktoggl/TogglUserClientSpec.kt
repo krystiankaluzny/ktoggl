@@ -1,11 +1,12 @@
 package org.ktoggl
 
+import io.kotlintest.assertSoftly
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
-import org.ktoggl.jvm.JvmTogglClientBuilder
 import org.ktoggl.entity.Day
 import org.ktoggl.entity.UserData
 import org.ktoggl.entity.UserPassword
+import org.ktoggl.jvm.JvmTogglClientBuilder
 import org.ktoggl.jvm.entity.creationTime
 import java.time.OffsetDateTime
 
@@ -18,17 +19,19 @@ class TogglUserClientSpec : StringSpec({
         val user = togglUserClient.getCurrentUser()
 
         user.apply {
-            id shouldBe 4343480L
-            apiToken shouldBe apiToken
-            defaultWorkspaceId shouldBe 2963000L
-            fullName shouldBe "Enormous2calm4"
-            email shouldBe "enormous2calm4@gamil.com"
-            beginningOfWeek shouldBe Day.MONDAY
-            language shouldBe "en_US"
-            imageUrl shouldBe "https://assets.toggl.com/avatars/5bd169bb81845e31568fa773b404d660.png"
-            creationTimestamp shouldBe 1537112454
-            creationTime shouldBe OffsetDateTime.parse("2018-09-16T15:40:54Z")
-            timezone shouldBe "Europe/Warsaw"
+            assertSoftly {
+                id shouldBe 4343480L
+                apiToken shouldBe apiToken
+                defaultWorkspaceId shouldBe 2963000L
+                fullName shouldBe "Enormous2calm4"
+                email shouldBe "enormous2calm4@gamil.com"
+                beginningOfWeek shouldBe Day.MONDAY
+                language shouldBe "en_US"
+                imageUrl shouldBe "https://assets.toggl.com/avatars/5bd169bb81845e31568fa773b404d660.png"
+                creationTimestamp shouldBe 1537112454
+                creationTime shouldBe OffsetDateTime.parse("2018-09-16T15:40:54Z")
+                timezone shouldBe "Europe/Warsaw"
+            }
         }
     }
 

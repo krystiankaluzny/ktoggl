@@ -101,7 +101,7 @@ class TogglTimeEntryClientSpec : StringSpec({
         togglTimeEntryClient.stopTimeEntry(timeEntry.id)
     }
 
-    "createTimeEntry without endTime then stopTimeEntry should set endTime" {
+    "f:createTimeEntry without endTime then stopTimeEntry should set endTime" {
 
         val createTimeEntryData = CreateTimeEntryData(
             startTimestamp = 1545568770,

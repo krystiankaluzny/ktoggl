@@ -19,7 +19,7 @@ data class CreateTimeEntryData(
     val description: String? = null,
     val billable: Boolean? = null,
     val startTimestamp: Long,
-    val endTimestamp: Long? = null,
+    val endTimestamp: Long,
     val tags: List<String> = emptyList()
 )
 
@@ -30,12 +30,16 @@ data class StartTimeEntryData(
     val tags: List<String> = emptyList()
 )
 
+/**
+ * If startTimestamp and endTimestamp are defined then durationSeconds is ignored
+ */
 data class UpdateTimeEntryData(
     val parent: TimeEntryParent? = null,
     val description: String? = null,
     val billable: Boolean? = null,
     val startTimestamp: Long? = null,
     val endTimestamp: Long? = null,
+    val durationSeconds: Long? = null,
     val tags: List<String>? = null
 )
 

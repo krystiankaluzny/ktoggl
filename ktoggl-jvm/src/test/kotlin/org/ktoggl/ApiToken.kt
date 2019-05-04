@@ -2,6 +2,6 @@ package org.ktoggl
 
 class ApiToken {
     companion object {
-        const val value = "0aa244fb303686e33ae8bbb13d1baebd"
+        const val value = "54afe9bb490f672a6cbc72eb31b3e26c"
     }
 }

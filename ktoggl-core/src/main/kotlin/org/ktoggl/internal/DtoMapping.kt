@@ -207,7 +207,7 @@ internal fun UpdateTimeEntryData.toInternal(p: TimeUtilProvider) =
         billable = billable,
         start = p.secondsToOffsetDateTimeStr(startTimestamp),
         stop = p.secondsToOffsetDateTimeStr(endTimestamp),
-        duration = if (endTimestamp != null && startTimestamp != null) endTimestamp - startTimestamp else null,
+        duration = if (endTimestamp != null && startTimestamp != null) endTimestamp - startTimestamp else durationSeconds,
         created_with = null,
         tags = tags,
         at = null

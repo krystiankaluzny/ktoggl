@@ -108,29 +108,42 @@ class TogglTimeEntryClientSpec : StringSpec({
         togglTimeEntryClient.stopTimeEntry(timeEntry.id)
     }
 
-    "!createTimeEntry without endTime then stopTimeEntry should set endTime" {
+    "startTimeEntry should create time entry that startTimestamp should be updatable" {
 
-        val createTimeEntryData = CreateTimeEntryData(
-            startTimestamp = 1545568770,
-            parent = ProjectParent(140214602),
-            description = "createTimeEntry without endTime then stopTimeEntry should set endTime")
-        val createdTimeEntry = togglTimeEntryClient.createTimeEntry(createTimeEntryData)
+        val currentTime = OffsetDateTime.now()
+        val startTimeEntryData = StartTimeEntryData(
+            parent = ProjectParent(140214570)  ,
+            tags = listOf("test"),
+            description = "startTimeEntry should create time entry that startTimestamp should be updatable"
+        )
 
-        val timeBeforeStop = OffsetDateTime.now().minusSeconds(1)
-        val timeEntry = togglTimeEntryClient.stopTimeEntry(createdTimeEntry.id)
-        val timeAfterStop = OffsetDateTime.now().plusSeconds(1)
+        val startedTimeEntry = togglTimeEntryClient.startTimeEntry(startTimeEntryData)
+
+        val updateTimeEntryData = UpdateTimeEntryData(
+            startTimestamp = currentTime.toEpochSecond(),
+            durationSeconds = -currentTime.toEpochSecond()
+        )
+
+        val timeEntry = togglTimeEntryClient.updateTimeEntry(startedTimeEntry.id, updateTimeEntryData)
 
         timeEntry.apply {
             assertSoftly {
-                id shouldBe createdTimeEntry.id
+                id shouldBe startedTimeEntry.id
                 workspaceId shouldBe 2963000
-                projectId shouldBe 140214602
-                startTimestamp shouldBe 1545568770
-                endTimestamp!! shouldBeInRange (LongRange(timeBeforeStop.toEpochSecond(), timeAfterStop.toEpochSecond()))
-                startTime shouldBe OffsetDateTime.parse("2018-12-23T12:39:30Z")
-                endTime!! shouldBe (after(timeBeforeStop) and before(timeAfterStop))
+                projectId shouldBe 140214570
+                taskId shouldBe null
+                description shouldBe "startTimeEntry should create time entry that startTimestamp should be updatable"
+                billable shouldBe false
+                startTimestamp shouldBe currentTime.toEpochSecond()
+                endTimestamp shouldBe null
+                durationSeconds shouldBe -startTimestamp
+                startTime.isEqual(currentTime)
+                endTime shouldBe null
+                tags shouldBe listOf("test")
             }
         }
+
+        togglTimeEntryClient.stopTimeEntry(timeEntry.id)
     }
 
     "startTimeEntry and stopTimeEntry sequence should be executable" {
